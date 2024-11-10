@@ -1,0 +1,20 @@
+{
+  "name": "wj-loading-01",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": ["ts", "js", "loading", "vue", "react"],
+  "description": "loading组件",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "build-loading": "npx tsc -p .",
+    "watch": "npx tsc -w"
+  },
+  "devDependencies": {
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10"
+  }
+}
