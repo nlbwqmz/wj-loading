@@ -1,3 +1,8 @@
-import FourSquareLoading from "./fourSquare";
-const Loading = {FourSquareLoading: FourSquareLoading}
+import SquareLoading from "./square";
+import BounceLoading from "./bounce";
+
+const Loading = {
+  SquareLoading,
+  BounceLoading
+}
 export default Loading
