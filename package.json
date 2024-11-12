@@ -1,6 +1,6 @@
 {
   "name": "wj-loading-01",
-  "version": "0.0.1-bate.0",
+  "version": "0.0.1-beta.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/nlbwqmz/wj-loading.git"
+    "url": "git+https://github.com/nlbwqmz/wj-loading.git"
   },
   "scripts": {
     "dev": "vite",
