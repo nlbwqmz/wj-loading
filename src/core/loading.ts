@@ -9,6 +9,7 @@ export interface LoadingOption {
   afterRemove?: () => void
   // 背景
   background?: string
+  zIndex?: number
 }
 
 const generateId = (length: number = 8) => {
@@ -37,6 +38,7 @@ export default class Loading {
   protected readonly container: HTMLElement
   // 渲染成功后执行
   protected afterRendered?: () => void
+  protected zIndex?: number
 
   constructor(option: LoadingOption) {
     this.id = `wj-loading-${generateId()}`
@@ -47,6 +49,7 @@ export default class Loading {
     this.interval = option.interval
     this.afterRemove = option.afterRemove
     this.background = option.background || 'none'
+    this.zIndex = this.zIndex || 2000
     this.style = document.createElement('style')
     this.container = document.createElement('div')
     this.#initContainerStyle()
@@ -69,6 +72,7 @@ export default class Loading {
       }
       
       .${this.id}-container {
+        z-index: ${this.zIndex};
         background: ${this.background};
         position: absolute;
         width: 100%;
