@@ -26,7 +26,7 @@
     "preview": "vite preview",
     "build-loading": "npx tsc -p .",
     "watch": "npx tsc -w",
-    "publish-test": "npm run build-loading && npm publish --tag test",
+    "publish-beta": "npm run build-loading && npm publish --tag beta",
     "publish-release": "npm run build-loading && npm publish"
   },
   "devDependencies": {
