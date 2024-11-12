@@ -26,7 +26,7 @@ new Loading.TextLoading({
 })
 ```
 
-## 使用
+## 参数
 
 ### 公用参数
 
@@ -94,3 +94,11 @@ new Loading.TextLoading({
 | :-: | :-: | :-: | :-: | :-: |
 | color | ['#FF5722', '#FF9800', '#FFC107'] | 否 | 长度为3的数组（string/number） | 颜色 |
 | size | 100px | 否 | number | 尺寸 |
+
+## 方法
+
+### 公用方法
+| 方法名 | 描述 |
+| :-: | :-: |
+| loading | 执行 |
+| remove | 移除 |
