@@ -1,9 +1,13 @@
 {
-  "name": "wj-loading-01",
+  "name": "wj-loading",
   "version": "0.0.1-beta.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "author": {
+    "name": "魏杰",
+    "url": "https://github.com/nlbwqmz"
+  },
   "keywords": [
     "ts",
     "js",
