@@ -1,5 +1,4 @@
-import {LoadingOption} from "../interface/interface";
-import Loading from "../loading";
+import Loading, {LoadingOption} from "../../core/loading";
 
 export interface BounceLoadingOption extends LoadingOption {
   color?: string | number;
@@ -16,23 +15,10 @@ export default class BounceLoading extends Loading {
     super(option)
     this.#color = option.color || '#333'
     this.#size = option.size || '20px'
-    this.setContainerCenter()
+    this.setContainerFlexCenter()
     this.addStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
-    if (this.immediate) {
-      this.loading()
-    }
-  }
-
-  #switchTextVisible() {
-    const loadingText = <HTMLElement>this.element.querySelector(`.${this.id}-text`)
-    if (loadingText) {
-      if (loadingText.offsetWidth < loadingText.scrollWidth) {
-        loadingText.style.display = 'none'; // 隐藏文字
-      } else {
-        loadingText.style.display = 'block'; // 显示文字
-      }
-    }
+    this.finish()
   }
 
   #createStyle() {

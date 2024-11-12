@@ -3,11 +3,59 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vite + TS</title>
+  <title>wj-loading</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
+    }
+
+    .title {
+      height: 50px;
+      line-height: 50px;
+      font-size: 30px;
+      font-weight: bold;
+      padding: 10px;
+      text-align: center
+    }
+
+    .tag {
+      text-align: center
+    }
+
+    .tag span {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+
+    .tag span:hover {
+      opacity: 0.8;
+    }
+
+    .grid-container {
+      padding: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      border-radius: 10px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0 6px 12px -2px, rgba(0, 0, 0, 0.3) 0 3px 7px -3px;
+      background: azure;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card-header {
+    }
+
+    .card-body {
+      background: darkgray;
+      height: 300px;
     }
   </style>
 </head>

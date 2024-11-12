@@ -1,5 +1,4 @@
-import {LoadingOption} from "../interface/interface";
-import Loading from "../loading";
+import Loading, {LoadingOption} from "../../core/loading";
 
 export interface SquareLoadingOption extends LoadingOption {
   maxSize?: number
@@ -33,9 +32,7 @@ export default class SquareLoading extends Loading {
         this.#switchTextVisible()
       }
     }
-    if (this.immediate) {
-      this.loading()
-    }
+    this.finish()
   }
 
   #switchTextVisible() {
@@ -50,7 +47,7 @@ export default class SquareLoading extends Loading {
   }
 
   #createStyle() {
-    const width = this.element === document.body ? window.innerWidth : this.element.offsetWidth
+    // const width = this.element === document.body ? window.innerWidth : this.element.offsetWidth
     const height = this.element === document.body ? window.innerHeight : this.element.offsetHeight
     let size = Math.min(this.element.offsetWidth, this.element.offsetHeight) / 4
     if (this.#maxSize && size > this.#maxSize) {
@@ -60,7 +57,7 @@ export default class SquareLoading extends Loading {
     const style = document.createElement('style')
     style.innerHTML = `
         .${this.id}-text {
-          width: ${width}px;
+          width: 100%;
           position: absolute;
           text-align: center;
           overflow: hidden;

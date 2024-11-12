@@ -1,35 +1,45 @@
-import Loading from "./index";
+import Loading from "./index"
+
+const keys = Object.keys(Loading)
+
+const createCard = () => {
+  let html = ''
+
+  keys.forEach(item => {
+    html += `
+      <div class="card">
+        <div class="card-header">${item}</div>
+        <div class="card-body" id="${item}-loading"></div>
+      </div>
+    `
+  })
+  return html
+}
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div style="width: 100%; height: 500px; background: aqua; display: flex; justify-content: center; align-items: center">
-    <div style="width: 200px; height: 200px; border: 1px red solid; overflow: scroll" id="test-div">
-      <div>test1</div>
-      <div>test2</div>
-      <div>test3</div>
-      <div>test4</div>
-      <div>test5</div>
-      <div>test6</div>
-      <div>test7</div>
-      <div>test</div>
-      <div>testtesttesttesttesttesttesttesttesttesttest</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>testtesttesttesttesttesttesttesttesttest</div>
-    </div>
+  <div class="title">wj-loading</div>
+  <div class="tag">
+    <span data-url="https://github.com/nlbwqmz/wj-loading">github</span>
+  </div>
+  <div class="grid-container">
+    ${createCard()}
   </div>
 `
 
-const loading = new Loading.BounceLoading({
-  immediate: true,
-  element: document.getElementById('test-div'),
-  background: 'rgba(0, 0, 0, .8)',
-  color: 'red',
-  // size: '50px'
-});
+keys.forEach(item => {
+  // @ts-ignore
+  new Loading[item]({
+    element: document.getElementById(`${item}-loading`),
+    background: 'rgba(255, 255, 255, .8)',
+    immediate: true
+  })
+})
+
+const children = document.querySelectorAll('.tag')[0].children;
+for (let i = 0; i < children.length; i++) {
+  children[i].addEventListener('click', e => {
+    window.open((<HTMLElement>e.target)?.dataset.url)
+  })
+}
+
+

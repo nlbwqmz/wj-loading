@@ -1,17 +1,33 @@
 {
   "name": "wj-loading-01",
-  "version": "0.0.1",
+  "version": "0.0.1-bate.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": ["ts", "js", "loading", "vue", "react"],
+  "keywords": [
+    "ts",
+    "js",
+    "loading",
+    "vue",
+    "react"
+  ],
   "description": "loading组件",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nlbwqmz/wj-loading.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "build-loading": "npx tsc -p .",
-    "watch": "npx tsc -w"
+    "watch": "npx tsc -w",
+    "publish-test": "npm run build-loading && npm publish --tag test",
+    "publish-release": "npm run build-loading && npm publish"
   },
   "devDependencies": {
     "typescript": "~5.6.2",

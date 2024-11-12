@@ -1,4 +1,24 @@
-import {LoadingOption} from "./interface/interface";
+export interface LoadingOption {
+  // 节点
+  element?: string | HTMLElement | null
+  // 立即执行
+  immediate?: boolean
+  // 执行时时间（毫秒）
+  interval?: number
+  // 移除后执行
+  afterRemove?: () => void
+  // 背景
+  background?: string
+}
+
+const generateId = (length: number = 8) => {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let id = '';
+  for (let i = 0; i < length; i++) {
+    id += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return id;
+}
 
 export default class Loading {
   protected readonly id: string
@@ -14,12 +34,13 @@ export default class Loading {
   protected readonly background: string
 
   protected readonly style: HTMLStyleElement
-  protected readonly loadingElement: HTMLElement
+  protected readonly container: HTMLElement
   // 渲染成功后执行
   protected afterRendered?: () => void
 
   constructor(option: LoadingOption) {
-    this.id = `wj-loading-${new Date().getTime()}`
+    this.id = `wj-loading-${generateId()}`
+    console.log(this.id)
     this.rendered = false
     this.element = this.#selectElement(option.element)
     this.immediate = option.immediate
@@ -27,7 +48,7 @@ export default class Loading {
     this.afterRemove = option.afterRemove
     this.background = option.background || 'none'
     this.style = document.createElement('style')
-    this.loadingElement = document.createElement('div')
+    this.container = document.createElement('div')
     this.#initContainerStyle()
     this.#initContainerElement()
   }
@@ -36,7 +57,7 @@ export default class Loading {
    * 初始化容器样式
    */
   #initContainerStyle() {
-    const width = this.element === document.body ? window.innerWidth : this.element.offsetWidth
+    // const width = this.element === document.body ? window.innerWidth : this.element.offsetWidth
     const height = this.element === document.body ? window.innerHeight : this.element.offsetHeight
     this.style.innerHTML = `
       .${this.id}-relative {
@@ -50,7 +71,7 @@ export default class Loading {
       .${this.id}-container {
         background: ${this.background};
         position: absolute;
-        width: ${width}px;
+        width: 100%;
         height: ${height}px;
         left: ${this.element.scrollLeft}px;
         top: ${this.element.scrollTop}px;
@@ -58,7 +79,7 @@ export default class Loading {
     `
   }
 
-  protected setContainerCenter() {
+  protected setContainerFlexCenter() {
     this.style.innerHTML += `
       .${this.id}-container {
         display: flex;
@@ -72,13 +93,13 @@ export default class Loading {
    * 初始化容器元素
    */
   #initContainerElement() {
-    this.loadingElement.classList.add(`${this.id}-container`)
+    this.container.classList.add(`${this.id}-container`)
   }
 
   /**
    * 查到目标元素
    */
-  #selectElement(element?: string | HTMLElement) {
+  #selectElement(element?: string | HTMLElement | null) {
     if (element) {
       if (typeof (element) === 'string') {
         const ele: HTMLElement | null = document.querySelector(element);
@@ -99,7 +120,6 @@ export default class Loading {
    */
   protected addStyle(style: HTMLStyleElement) {
     this.style.appendChild(style)
-
   }
 
   /**
@@ -107,9 +127,15 @@ export default class Loading {
    */
   protected addElement(dom: HTMLElement | string) {
     if (typeof (dom) === 'string') {
-      this.loadingElement.innerHTML += dom
+      this.container.innerHTML += dom
     } else {
-      this.loadingElement.appendChild(dom)
+      this.container.appendChild(dom)
+    }
+  }
+
+  protected finish() {
+    if (this.immediate) {
+      this.loading()
     }
   }
 
@@ -125,7 +151,7 @@ export default class Loading {
     }
     this.element.classList.add(`${this.id}-lock`)
     document.getElementsByTagName('head')[0].appendChild(this.style)
-    this.element.appendChild(this.loadingElement)
+    this.element.appendChild(this.container)
     this.rendered = true
     this.afterRendered && this.afterRendered()
     if (this.interval && this.interval > 0) {
@@ -142,8 +168,8 @@ export default class Loading {
     if (!this.rendered) {
       return
     }
-    if (this.loadingElement) {
-      this.loadingElement.remove()
+    if (this.container) {
+      this.container.remove()
     }
     if (this.style) {
       this.style.remove()
