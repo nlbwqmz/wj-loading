@@ -38,6 +38,7 @@ new Loading.TextLoading({
 |  immediate  |     false     | 否  |         boolean         |                    立即执行                    |
 |  interval   |       -       | 否  |         number          |                  执行时间（毫秒）                  |
 | background  |       -       | 否  |         string          |                     背景                     |
+|   zIndex    |     2000      | 否  |         number          |                  z-index                   |
 | afterRemove |       -       | 否  |       （） => void        |                   移除后回调                    |
 
 ### BounceLoading 参数
