@@ -47,9 +47,9 @@ export default class SquareLoading extends Loading {
   }
 
   #createStyle() {
-    // const width = this.element === document.body ? window.innerWidth : this.element.offsetWidth
+    const width = this.element === document.body ? window.innerWidth : this.element.offsetWidth
     const height = this.element === document.body ? window.innerHeight : this.element.offsetHeight
-    let size = Math.min(this.element.offsetWidth, this.element.offsetHeight) / 4
+    let size = Math.min(width, height) / 4
     if (this.#maxSize && size > this.#maxSize) {
       size = this.#maxSize
     }

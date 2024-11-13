@@ -6,6 +6,7 @@ import MeshLoaderLoading from "./module/mesh-loader";
 import CircleLoaderLoading from "./module/circle-loader";
 import CubesLoading from "./module/cubes";
 import TextLoading from "./module/text";
+import DotJumpLoading from "./module/dot-jump";
 
 const Loading = {
   SquareLoading,
@@ -15,6 +16,7 @@ const Loading = {
   BounceLoading,
   CircleLoaderLoading,
   CubesLoading,
-  TextLoading
+  TextLoading,
+  DotJumpLoading
 }
 export default Loading
