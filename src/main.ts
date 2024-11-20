@@ -18,16 +18,9 @@ const createCard = () => {
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="title">wj-loading</div>
   <div class="desc">
-    <div>
-      <div>
-        <span>安装：</span>
-        <span>yarn add wj-loading | npm install wj-loading</span>
-      </div>
-      <div>
-        <span>文档：</span>
-        <span data-url="https://github.com/nlbwqmz/wj-loading" class="url">github</span>
-      </div>
-    </div>
+    <div class="bg">yarn add wj-loading</div>
+    <div class="bg">npm install wj-loading</div>
+    <div data-url="https://github.com/nlbwqmz/wj-loading" class="url">github</div>
   </div>
   <div class="grid-container">
     ${createCard()}

@@ -7,7 +7,7 @@ export interface CircleLoaderLoadingOption extends LoadingOption {
 
 export default class CircleLoaderLoading extends Loading {
 
-  #color: string | number
+  readonly #color: string | number
 
   constructor(option: CircleLoaderLoadingOption) {
     super(option)

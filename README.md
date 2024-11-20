@@ -1,6 +1,6 @@
 # wj-loading
 
-Loading组件~~~[演示](https://nlbwqmz.github.io/wj-loading-pages/)
+开箱即用的loading组件~~~[演示](https://nlbwqmz.github.io/wj-loading-pages/)
 
 ## 安装
 
@@ -103,6 +103,26 @@ new Loading.TextLoading({
 |  参数名  |       默认值        | 必须 |          数据类型          | 描述 |
 |:-----:|:----------------:|:--:|:----------------------:|:--:|
 | color | ['#000', '#000'] | 否  | 长度为2的数组（string/number） | 颜色 |
+
+### JellyLoading 参数
+
+|      参数名      | 默认值  | 必须 |     数据类型      |  描述   |
+|:-------------:|:----:|:--:|:-------------:|:-----:|
+|     color     | #fff | 否  | string/number |  颜色   |
+|  shadowColor  | #000 | 否  | string/number | 阴影颜色  |
+| shadowOpacity | 0.1  | 否  |    number     | 阴影透明度 |
+
+### WaveLoading 参数
+
+|  参数名  | 默认值  | 必须 |     数据类型      | 描述 |
+|:-----:|:----:|:--:|:-------------:|:--:|
+| color | #000 | 否  | string/number | 颜色 |
+
+### DotExpandLoading 参数
+
+|  参数名  | 默认值  | 必须 |     数据类型      | 描述 |
+|:-----:|:----:|:--:|:-------------:|:--:|
+| color | #000 | 否  | string/number | 颜色 |
 
 ## 方法
 

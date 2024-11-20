@@ -1,21 +1,25 @@
 {
   "name": "wj-loading",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "license": "MIT",
   "author": {
     "name": "魏杰",
     "url": "https://github.com/nlbwqmz"
   },
   "keywords": [
-    "ts",
-    "js",
     "loading",
     "vue",
-    "react"
+    "react",
+    "css",
+    "ts",
+    "js",
+    "web",
+    "h5"
   ],
-  "description": "loading组件",
+  "description": "开箱即用的loading组件",
   "files": [
     "dist",
     "README.md"
@@ -27,7 +31,7 @@
   "scripts": {
     "dev": "vite",
     "clean": "npx rimraf dist",
-    "build": "tsc && vite build --base ./",
+    "build": "npm run clean && tsc && vite build --base ./",
     "preview": "vite preview",
     "build-loading": "npm run clean && npx tsc -p .",
     "watch": "npm run clean && npx tsc -w",

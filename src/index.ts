@@ -7,6 +7,9 @@ import CircleLoaderLoading from "./module/circle-loader";
 import CubesLoading from "./module/cubes";
 import TextLoading from "./module/text";
 import DotJumpLoading from "./module/dot-jump";
+import JellyLoading from "./module/jelly";
+import WaveLoading from "./module/wave";
+import DotExpandLoading from "./module/dot-expand";
 
 const Loading = {
   SquareLoading,
@@ -17,6 +20,9 @@ const Loading = {
   CircleLoaderLoading,
   CubesLoading,
   TextLoading,
-  DotJumpLoading
+  DotJumpLoading,
+  JellyLoading,
+  WaveLoading,
+  DotExpandLoading
 }
 export default Loading
