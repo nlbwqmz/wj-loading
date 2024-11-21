@@ -32,14 +32,14 @@ new Loading.TextLoading({
 
 ### 公用参数
 
-|     参数名     |      默认值      | 必须 |          数据类型           |                     描述                     |
-|:-----------:|:-------------:|:--:|:-----------------------:|:------------------------------------------:|
-|   element   | document.body | 否  | string/HTMLElement/null | 容器节点(若为string，则使用document.querySelector查找) |
-|  immediate  |     false     | 否  |         boolean         |                    立即执行                    |
-|  interval   |       -       | 否  |         number          |                  执行时间（毫秒）                  |
-| background  |       -       | 否  |         string          |                     背景                     |
-|   zIndex    |     2000      | 否  |         number          |                  z-index                   |
-| afterRemove |       -       | 否  |       （） => void        |                   移除后回调                    |
+|     参数名     |        默认值         | 必须 |          数据类型           |                     描述                     |
+|:-----------:|:------------------:|:--:|:-----------------------:|:------------------------------------------:|
+|   element   |   document.body    | 否  | string/HTMLElement/null | 容器节点(若为string，则使用document.querySelector查找) |
+|  immediate  |       false        | 否  |         boolean         |                    立即执行                    |
+|  interval   |         -          | 否  |         number          |                  执行时间（毫秒）                  |
+| background  | rgba(0, 0, 0, 0.2) | 否  |         string          |                     背景                     |
+|   zIndex    |        2000        | 否  |         number          |                  z-index                   |
+| afterRemove |         -          | 否  |       () => void        |                   移除后回调                    |
 
 ### BounceLoading 参数
 
@@ -128,7 +128,7 @@ new Loading.TextLoading({
 
 ### 公用方法
 
-|   方法名   | 描述 |
-|:-------:|:--:|
-| loading | 执行 |
-| remove  | 移除 |
+|        方法名        |     必须     |         参数         | 描述 |
+|:-----------------:|:----------:|:------------------:|:--:|
+| loading(interval) | interval:否 | interval:执行时时间（毫秒） | 执行 |
+|      remove       |     -      |         -          | 移除 |

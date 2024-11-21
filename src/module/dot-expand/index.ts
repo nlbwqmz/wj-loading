@@ -9,7 +9,7 @@ export default class DotExpandLoading extends Loading {
 
   readonly #color: string | number
 
-  constructor(option: DotExpandLoadingOption) {
+  constructor(option: DotExpandLoadingOption = {}) {
     super(option)
     this.#color = option.color || '#000'
     this.setContainerFlexCenter()

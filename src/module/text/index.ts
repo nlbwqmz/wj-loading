@@ -3,7 +3,7 @@ import Loading, {LoadingOption} from "../../core/loading";
 export interface TextLoadingOption extends LoadingOption {
   color?: string | number;
   size?: string;
-  text: string;
+  text?: string;
 }
 
 
@@ -13,12 +13,11 @@ export default class TextLoading extends Loading {
   readonly #size: string
   readonly #text: string
 
-  constructor(option: TextLoadingOption) {
+  constructor(option: TextLoadingOption = {}) {
     super(option)
     this.#color = option.color || '#333'
     this.#size = option.size || '16px'
     this.#text = option.text || 'Loading...'
-    console.log(this.#text.length)
     this.setContainerFlexCenter()
     this.addStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())

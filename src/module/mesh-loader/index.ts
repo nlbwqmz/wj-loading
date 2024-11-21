@@ -8,7 +8,7 @@ export default class MeshLoaderLoading extends Loading {
 
   readonly #color: string | number;
 
-  constructor(option: MeshLoaderLoadingOption) {
+  constructor(option: MeshLoaderLoadingOption = {}) {
     super(option)
     this.#color = option.color || '#F44336'
     this.setContainerFlexCenter()

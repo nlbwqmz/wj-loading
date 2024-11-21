@@ -11,7 +11,7 @@ export default class CubesLoading extends Loading {
   readonly #color: string | number
   readonly #size: string
 
-  constructor(option: CubesLoadingOption) {
+  constructor(option: CubesLoadingOption = {}) {
     super(option)
     this.#color = option.color || '#333'
     this.#size = option.size || '20px'

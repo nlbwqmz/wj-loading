@@ -10,7 +10,7 @@ export default class DotJumpLoading extends Loading {
 
   readonly #color: FixedLengthArray<string | number, 2>
 
-  constructor(option: DotJumpOption) {
+  constructor(option: DotJumpOption = {}) {
     super(option)
     this.#color = option.color && option.color.length >= 2 ? option.color : ['#000', '#000']
     this.setContainerFlexCenter()

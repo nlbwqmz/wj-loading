@@ -9,7 +9,7 @@ export default class CircleLoaderLoading extends Loading {
 
   readonly #color: string | number
 
-  constructor(option: CircleLoaderLoadingOption) {
+  constructor(option: CircleLoaderLoadingOption = {}) {
     super(option)
     this.#color = option.color || '#F44336'
     this.setContainerFlexCenter()

@@ -12,7 +12,7 @@ export default class JellyLoading extends Loading {
   readonly #shadowColor: string | number
   readonly #shadowOpacity: number
 
-  constructor(option: JellyLoadingOption) {
+  constructor(option: JellyLoadingOption = {}) {
     super(option)
     this.#color = option.color || '#fff'
     this.#shadowColor = option.shadowColor || '#000'

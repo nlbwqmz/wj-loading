@@ -11,7 +11,7 @@ export default class BounceLoading extends Loading {
   readonly #color: string | number
   readonly #size: string
 
-  constructor(option: BounceLoadingOption) {
+  constructor(option: BounceLoadingOption = {}) {
     super(option)
     this.#color = option.color || '#333'
     this.#size = option.size || '20px'
@@ -27,7 +27,6 @@ export default class BounceLoading extends Loading {
       .${this.id}-bounce {
        text-align: center;
       }
-      
       .${this.id}-bounce>div {
        width: ${this.#size};
        height: ${this.#size};
@@ -36,15 +35,12 @@ export default class BounceLoading extends Loading {
        display: inline-block;
        animation: ${this.id}-sk-bouncedelay 1.4s infinite ease-in-out both;
       }
-      
       .${this.id}-bounce .${this.id}-bounce1 {
        animation-delay: -0.32s;
       }
-      
       .${this.id}-bounce .${this.id}-bounce2 {
        animation-delay: -0.16s;
       }
-      
       @keyframes ${this.id}-sk-bouncedelay {
        0%,
        80%,

@@ -11,7 +11,7 @@ export default class CmSpinnerLoading extends Loading {
   readonly #color: FixedLengthArray<string | number, 3>
   readonly #size: string
 
-  constructor(option: CmSpinnerLoadingOption) {
+  constructor(option: CmSpinnerLoadingOption = {}) {
     super(option)
     this.#color = option.color && option.color.length >= 3 ? option.color : ['#F15E41', '#BAD375', '#26A9E0']
     this.#size = option.size || '100px'

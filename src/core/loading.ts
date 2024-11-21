@@ -33,22 +33,20 @@ export default class Loading {
   protected readonly afterRemove?: () => void
   // 背景
   protected readonly background: string
-
   protected readonly style: HTMLStyleElement
   protected readonly container: HTMLElement
   // 渲染成功后执行
   protected afterRendered?: () => void
   protected zIndex?: number
 
-  constructor(option: LoadingOption) {
+  constructor(option: LoadingOption = {}) {
     this.id = `wj-loading-${generateId()}`
-    console.log(this.id)
     this.rendered = false
     this.element = this.#selectElement(option.element)
     this.immediate = option.immediate
     this.interval = option.interval
     this.afterRemove = option.afterRemove
-    this.background = option.background || 'none'
+    this.background = option.background || 'rgba(0, 0, 0, 0.2)'
     this.zIndex = this.zIndex || 2000
     this.style = document.createElement('style')
     this.container = document.createElement('div')
@@ -66,12 +64,11 @@ export default class Loading {
       .${this.id}-relative {
         position: relative;
       }
-      
       .${this.id}-lock {
-          overflow: hidden !important;
+        overflow: hidden !important;
       }
-      
       .${this.id}-container {
+        user-select: none !important;
         z-index: ${this.zIndex};
         background: ${this.background};
         position: absolute;
@@ -139,14 +136,14 @@ export default class Loading {
 
   protected finish() {
     if (this.immediate) {
-      this.loading()
+      this.loading(this.interval)
     }
   }
 
   /**
    * 执行loading
    */
-  loading() {
+  loading(interval?: number) {
     if (this.rendered) {
       return
     }
@@ -157,12 +154,12 @@ export default class Loading {
     document.getElementsByTagName('head')[0].appendChild(this.style)
     this.element.appendChild(this.container)
     this.rendered = true
-    this.afterRendered && this.afterRendered()
-    if (this.interval && this.interval > 0) {
+    if (interval && interval > 0) {
       setTimeout(() => {
         this.remove()
-      }, this.interval)
+      }, interval)
     }
+    this.afterRendered && this.afterRendered()
   }
 
   /**

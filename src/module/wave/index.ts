@@ -9,7 +9,7 @@ export default class WaveLoading extends Loading {
 
   readonly #color: string | number
 
-  constructor(option: WaveLoadingOption) {
+  constructor(option: WaveLoadingOption = {}) {
     super(option)
     this.#color = option.color || '#000'
     this.setContainerFlexCenter()

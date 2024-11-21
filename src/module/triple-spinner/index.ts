@@ -11,7 +11,7 @@ export default class TripleSpinnerLoading extends Loading {
   readonly #color: FixedLengthArray<string | number, 3>
   readonly #size: string
 
-  constructor(option: TripleSpinnerLoadingOption) {
+  constructor(option: TripleSpinnerLoadingOption = {}) {
     super(option)
     this.#color = option.color && option.color.length >= 3 ? option.color : ['#FF5722', '#FF9800', '#FFC107']
     this.#size = option.size || '100px'

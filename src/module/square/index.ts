@@ -19,7 +19,7 @@ export default class SquareLoading extends Loading {
   // 1: 始终显示 2：始终不显示 3：若一行不能显示则不显示
   readonly #textVisible?: 1 | 2 | 3
 
-  constructor(option: SquareLoadingOption) {
+  constructor(option: SquareLoadingOption = {}) {
     super(option)
     this.#text = option.text || 'Loading...'
     this.#fontColor = option.fontColor || 'rgba(128, 128, 128, .9)'
