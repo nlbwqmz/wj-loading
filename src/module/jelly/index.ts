@@ -18,7 +18,7 @@ export default class JellyLoading extends Loading {
     this.#shadowColor = option.shadowColor || '#000'
     this.#shadowOpacity = option.shadowOpacity || 0.1
     this.setContainerFlexCenter()
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.finish()
   }

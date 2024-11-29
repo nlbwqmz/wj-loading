@@ -16,7 +16,7 @@ export default class TripleSpinnerLoading extends Loading {
     this.#color = option.color && option.color.length >= 3 ? option.color : ['#FF5722', '#FF9800', '#FFC107']
     this.#size = option.size || '100px'
     this.setContainerFlexCenter()
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.finish()
   }

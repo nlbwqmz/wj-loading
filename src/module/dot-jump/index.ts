@@ -14,7 +14,7 @@ export default class DotJumpLoading extends Loading {
     super(option)
     this.#color = option.color && option.color.length >= 2 ? option.color : ['#000', '#000']
     this.setContainerFlexCenter()
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.finish()
   }

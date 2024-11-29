@@ -13,7 +13,7 @@ export default class WaveLoading extends Loading {
     super(option)
     this.#color = option.color || '#000'
     this.setContainerFlexCenter()
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.finish()
   }

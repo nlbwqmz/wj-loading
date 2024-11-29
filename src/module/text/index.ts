@@ -19,7 +19,7 @@ export default class TextLoading extends Loading {
     this.#size = option.size || '16px'
     this.#text = option.text || 'Loading...'
     this.setContainerFlexCenter()
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.finish()
   }

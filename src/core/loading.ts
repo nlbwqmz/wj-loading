@@ -23,6 +23,7 @@ const generateId = (length: number = 8) => {
 
 export default class Loading {
   protected readonly id: string
+  // 已渲染
   protected rendered: boolean
   protected readonly element: HTMLElement
   // 立即执行
@@ -34,10 +35,17 @@ export default class Loading {
   // 背景
   protected readonly background: string
   protected readonly style: HTMLStyleElement
+  #childrenStyle?: HTMLStyleElement
+  #containerFlexCenter?: boolean
   protected readonly container: HTMLElement
   // 渲染成功后执行
   protected afterRendered?: () => void
+  // 元素宽或高改变后触发
+  protected handleElementChange?: () => void
   protected zIndex?: number
+  #currentOffsetHeight?: number
+  #currentOffsetWidth?: number
+  #observer?: ResizeObserver
 
   constructor(option: LoadingOption = {}) {
     this.id = `wj-loading-${generateId()}`
@@ -50,17 +58,10 @@ export default class Loading {
     this.zIndex = this.zIndex || 2000
     this.style = document.createElement('style')
     this.container = document.createElement('div')
-    this.#initContainerStyle()
-    this.#initContainerElement()
   }
 
-  /**
-   * 初始化容器样式
-   */
-  #initContainerStyle() {
-    // const width = this.element === document.body ? window.innerWidth : this.element.offsetWidth
-    const height = this.element === document.body ? window.innerHeight : this.element.offsetHeight
-    this.style.innerHTML = `
+  #createStyleInnerHTML = (height: number, width: number) => {
+    let styleInnerHTML = `
       .${this.id}-relative {
         position: relative;
       }
@@ -72,22 +73,53 @@ export default class Loading {
         z-index: ${this.zIndex};
         background: ${this.background};
         position: absolute;
-        width: 100%;
+        width: ${width}px;
         height: ${height}px;
         left: ${this.element.scrollLeft}px;
         top: ${this.element.scrollTop}px;
       }
     `
-  }
-
-  protected setContainerFlexCenter() {
-    this.style.innerHTML += `
+    if (this.#containerFlexCenter === true) {
+      styleInnerHTML += `
       .${this.id}-container {
         display: flex;
         justify-content: center;
         align-items: center;
       }
     `
+    }
+    return styleInnerHTML
+  }
+
+  /**
+   * 初始化容器样式
+   */
+  #initContainerStyle() {
+    const boundingClientRect = this.element.getBoundingClientRect();
+    const width = this.element === document.body ? window.innerWidth : boundingClientRect.width
+    const height = this.element === document.body ? window.innerHeight : boundingClientRect.height
+    this.#currentOffsetWidth = width
+    this.#currentOffsetHeight = height
+    this.style.innerHTML = this.#createStyleInnerHTML(height, width)
+  }
+
+  #listen() {
+    this.#observer = new ResizeObserver(() => {
+      const boundingClientRect = this.element.getBoundingClientRect();
+      const width = this.element === document.body ? window.innerWidth : boundingClientRect.width
+      const height = this.element === document.body ? window.innerHeight : boundingClientRect.height
+      if (this.#currentOffsetHeight !== height || this.#currentOffsetWidth !== width) {
+        this.#currentOffsetWidth = width
+        this.#currentOffsetHeight = height
+        this.style.innerHTML = this.#createStyleInnerHTML(height, width)
+        this.handleElementChange && this.handleElementChange()
+      }
+    })
+    this.#observer.observe(this.element)
+  }
+
+  protected setContainerFlexCenter(flag: boolean = true) {
+    this.#containerFlexCenter = flag
   }
 
   /**
@@ -119,8 +151,12 @@ export default class Loading {
   /**
    * 添加样式
    */
-  protected addStyle(style: HTMLStyleElement) {
-    this.style.appendChild(style)
+  protected setChildrenStyle(style: HTMLStyleElement) {
+    if (this.#childrenStyle) {
+      this.#childrenStyle.innerHTML = style.innerHTML
+    } else {
+      this.#childrenStyle = style
+    }
   }
 
   /**
@@ -135,6 +171,8 @@ export default class Loading {
   }
 
   protected finish() {
+    this.#initContainerStyle()
+    this.#initContainerElement()
     if (this.immediate) {
       this.loading(this.interval)
     }
@@ -152,7 +190,11 @@ export default class Loading {
     }
     this.element.classList.add(`${this.id}-lock`)
     document.getElementsByTagName('head')[0].appendChild(this.style)
+    if (this.#childrenStyle) {
+      document.getElementsByTagName('head')[0].appendChild(this.#childrenStyle)
+    }
     this.element.appendChild(this.container)
+    this.#listen()
     this.rendered = true
     if (interval && interval > 0) {
       setTimeout(() => {
@@ -169,12 +211,10 @@ export default class Loading {
     if (!this.rendered) {
       return
     }
-    if (this.container) {
-      this.container.remove()
-    }
-    if (this.style) {
-      this.style.remove()
-    }
+    this.#observer && this.#observer.disconnect()
+    this.container && this.container.remove()
+    this.style && this.style.remove()
+    this.#childrenStyle && this.#childrenStyle.remove()
     if (this.element.classList.contains(`${this.id}-relative`)) {
       this.element.classList.remove(`${this.id}-relative`)
     }

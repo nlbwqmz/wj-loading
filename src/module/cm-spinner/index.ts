@@ -16,7 +16,7 @@ export default class CmSpinnerLoading extends Loading {
     this.#color = option.color && option.color.length >= 3 ? option.color : ['#F15E41', '#BAD375', '#26A9E0']
     this.#size = option.size || '100px'
     this.setContainerFlexCenter()
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.finish()
   }

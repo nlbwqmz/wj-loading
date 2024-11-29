@@ -13,7 +13,7 @@ export default class CircleLoaderLoading extends Loading {
     super(option)
     this.#color = option.color || '#F44336'
     this.setContainerFlexCenter()
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.finish()
   }

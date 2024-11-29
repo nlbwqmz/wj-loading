@@ -16,7 +16,7 @@ export default class CubesLoading extends Loading {
     this.#color = option.color || '#333'
     this.#size = option.size || '20px'
     this.setContainerFlexCenter()
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.finish()
   }

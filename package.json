@@ -1,6 +1,6 @@
 {
   "name": "wj-loading",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "main": "dist/wj-loading.umd.js",
   "module": "dist/wj-loading.es.js",

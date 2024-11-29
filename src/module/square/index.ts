@@ -25,9 +25,15 @@ export default class SquareLoading extends Loading {
     this.#fontColor = option.fontColor || 'rgba(128, 128, 128, .9)'
     this.#textVisible = option.textVisible || 3
     this.#maxSize = option.maxSize
-    this.addStyle(this.#createStyle())
+    this.setChildrenStyle(this.#createStyle())
     this.addElement(this.#createLoadingElement())
     this.afterRendered = () => {
+      if (this.#textVisible === 3) {
+        this.#switchTextVisible()
+      }
+    }
+    this.handleElementChange = () => {
+      this.setChildrenStyle(this.#createStyle())
       if (this.#textVisible === 3) {
         this.#switchTextVisible()
       }
@@ -47,8 +53,9 @@ export default class SquareLoading extends Loading {
   }
 
   #createStyle() {
-    const width = this.element === document.body ? window.innerWidth : this.element.offsetWidth
-    const height = this.element === document.body ? window.innerHeight : this.element.offsetHeight
+    const boundingClientRect = this.element.getBoundingClientRect();
+    const width = this.element === document.body ? window.innerWidth : boundingClientRect.width
+    const height = this.element === document.body ? window.innerHeight : boundingClientRect.height
     let size = Math.min(width, height) / 4
     if (this.#maxSize && size > this.#maxSize) {
       size = this.#maxSize
