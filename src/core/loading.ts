@@ -10,6 +10,8 @@ export interface LoadingOption {
   // 背景
   background?: string
   zIndex?: number
+  // 延迟remove 解决闪烁问题
+  delayRemove?: number
 }
 
 const generateId = (length: number = 8) => {
@@ -38,6 +40,7 @@ export default class Loading {
   #childrenStyle?: HTMLStyleElement
   #containerFlexCenter?: boolean
   protected readonly container: Element
+  protected readonly delayRemove?: number
   // 渲染成功后执行
   protected afterRendered?: () => void
   // 元素宽或高改变后触发
@@ -53,6 +56,7 @@ export default class Loading {
     this.element = this.#selectElement(option.element)
     this.immediate = option.immediate
     this.interval = option.interval
+    this.delayRemove = option.delayRemove
     this.afterRemove = option.afterRemove
     this.background = option.background || 'rgba(0, 0, 0, 0.2)'
     this.zIndex = this.zIndex || 2000
@@ -208,19 +212,30 @@ export default class Loading {
   /**
    * 移除
    */
-  remove() {
+  remove(delayRemove?: number) {
     if (!this.rendered) {
       return
     }
-    this.#observer && this.#observer.disconnect()
-    this.container && this.container.remove()
-    this.style && this.style.remove()
-    this.#childrenStyle && this.#childrenStyle.remove()
-    if (this.element.classList.contains(`${this.id}-relative`)) {
-      this.element.classList.remove(`${this.id}-relative`)
+    const r = () => {
+      this.#observer && this.#observer.disconnect()
+      this.container && this.container.remove()
+      this.style && this.style.remove()
+      this.#childrenStyle && this.#childrenStyle.remove()
+      if (this.element.classList.contains(`${this.id}-relative`)) {
+        this.element.classList.remove(`${this.id}-relative`)
+      }
+      this.element.classList.remove(`${this.id}-lock`)
+      this.rendered = false
+      this.afterRemove && this.afterRemove()
     }
-    this.element.classList.remove(`${this.id}-lock`)
-    this.rendered = false
-    this.afterRemove && this.afterRemove()
+    const delay = delayRemove || this.delayRemove || 0
+    if (delay && delay > 0) {
+      setTimeout(() => {
+        r()
+      }, delay)
+    } else {
+      r()
+    }
+
   }
 }

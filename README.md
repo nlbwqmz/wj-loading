@@ -40,6 +40,7 @@ new Loading.TextLoading({
 | background  | rgba(0, 0, 0, 0.2) | 否  |         string          |                     背景                     |
 |   zIndex    |        2000        | 否  |         number          |                  z-index                   |
 | afterRemove |         -          | 否  |       () => void        |                   移除后回调                    |
+| delayRemove |         -          | 否  |         number          |                  延迟移除（毫秒）                  |
 
 ### BounceLoading 参数
 
@@ -128,7 +129,7 @@ new Loading.TextLoading({
 
 ### 公用方法
 
-|        方法名        |     必须     |         参数         | 描述 |
-|:-----------------:|:----------:|:------------------:|:--:|
-| loading(interval) | interval:否 | interval:执行时时间（毫秒） | 执行 |
-|      remove       |     -      |         -          | 移除 |
+|         方法名         |      必须       |          参数          | 描述 |
+|:-------------------:|:-------------:|:--------------------:|:--:|
+|  loading(interval)  |  interval:否   |  interval:执行时时间（毫秒）  | 执行 |
+| remove(delayRemove) | delayRemove:否 | delayRemove:延迟移除（毫秒） | 移除 |
