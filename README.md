@@ -125,11 +125,28 @@ new Loading.TextLoading({
 |:-----:|:----:|:--:|:-------------:|:--:|
 | color | #000 | 否  | string/number | 颜色 |
 
+### WaveValueLoading 参数
+
+|    参数名     |   默认值   | 必须 |     数据类型      |     描述     |
+|:----------:|:-------:|:--:|:-------------:|:----------:|
+|   color    | #76DAFF | 否  | string/number |     颜色     |
+|    size    |   100   | 否  |    number     |     尺寸     |
+|   value    |    0    | 否  |    number     | 进度值(0-100) |
+|  fontSize  |  20px   | 否  |    string     |    字体大小    |
+| fontColor  |  20px   | 否  | string/number |    字体颜色    |
+| fontWeight |  20px   | 否  | string/number |    字体粗细    |
+
 ## 方法
 
 ### 公用方法
 
-|         方法名         |      必须       |          参数          | 描述 |
-|:-------------------:|:-------------:|:--------------------:|:--:|
-|  loading(interval)  |  interval:否   |  interval:执行时时间（毫秒）  | 执行 |
-| remove(delayRemove) | delayRemove:否 | delayRemove:延迟移除（毫秒） | 移除 |
+|             方法名             |      必须       |          参数          | 描述 |
+|:---------------------------:|:-------------:|:--------------------:|:--:|
+|  loading(interval: number)  |  interval:否   |  interval:执行时时间（毫秒）  | 执行 |
+| remove(delayRemove: number) | delayRemove:否 | delayRemove:延迟移除（毫秒） | 移除 |
+
+### WaveValueLoading 方法
+
+|           方法名           |   必须    |        参数        |  描述   |
+|:-----------------------:|:-------:|:----------------:|:-----:|
+| setValue(value: number) | value:否 | value:进度值(0-100) | 设置进度值 |

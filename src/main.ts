@@ -28,12 +28,31 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 
 keys.forEach(item => {
-  // @ts-ignore
-  new Loading[item]({
-    element: document.getElementById(`${item}-loading`),
-    background: 'rgba(255, 255, 255, .8)',
-    immediate: true
-  })
+  if (item !== 'WaveValueLoading') {
+    // @ts-ignore
+    new Loading[item]({
+      element: document.getElementById(`${item}-loading`),
+      background: 'rgba(255, 255, 255, .8)',
+      immediate: true
+    })
+  } else {
+    let value = 0
+    const waveValueLoading = new Loading.WaveValueLoading({
+      element: document.getElementById(`${item}-loading`),
+      background: 'rgba(255, 255, 255, .8)',
+      immediate: true,
+      value
+    })
+    setInterval(() => {
+      if (value < 100) {
+        value++
+      } else {
+        value = 0
+      }
+      waveValueLoading.setValue(value)
+    }, 200)
+  }
+
 })
 
 const list = document.querySelectorAll('.url');

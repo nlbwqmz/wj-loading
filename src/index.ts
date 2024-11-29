@@ -10,6 +10,7 @@ import DotJumpLoading from "./module/dot-jump";
 import JellyLoading from "./module/jelly";
 import WaveLoading from "./module/wave";
 import DotExpandLoading from "./module/dot-expand";
+import WaveValueLoading from "./module/wave_value";
 
 const Loading = {
   SquareLoading,
@@ -23,6 +24,7 @@ const Loading = {
   DotJumpLoading,
   JellyLoading,
   WaveLoading,
-  DotExpandLoading
+  DotExpandLoading,
+  WaveValueLoading
 }
 export default Loading
