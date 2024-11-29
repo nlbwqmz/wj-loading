@@ -1,6 +1,6 @@
 export interface LoadingOption {
   // 节点
-  element?: string | HTMLElement | null
+  element?: string | Element | null
   // 立即执行
   immediate?: boolean
   // 执行时时间（毫秒）
@@ -25,7 +25,7 @@ export default class Loading {
   protected readonly id: string
   // 已渲染
   protected rendered: boolean
-  protected readonly element: HTMLElement
+  protected readonly element: Element
   // 立即执行
   protected readonly immediate?: boolean
   // 执行时时间（毫秒）
@@ -37,7 +37,7 @@ export default class Loading {
   protected readonly style: HTMLStyleElement
   #childrenStyle?: HTMLStyleElement
   #containerFlexCenter?: boolean
-  protected readonly container: HTMLElement
+  protected readonly container: Element
   // 渲染成功后执行
   protected afterRendered?: () => void
   // 元素宽或高改变后触发
@@ -132,10 +132,10 @@ export default class Loading {
   /**
    * 查到目标元素
    */
-  #selectElement(element?: string | HTMLElement | null) {
+  #selectElement(element?: string | Element | null) {
     if (element) {
       if (typeof (element) === 'string') {
-        const ele: HTMLElement | null = document.querySelector(element);
+        const ele: Element | null = document.querySelector(element);
         if (!ele) {
           throw new Error(`未找到当前节点：${element}`)
         }
@@ -162,7 +162,7 @@ export default class Loading {
   /**
    * 添加节点
    */
-  protected addElement(dom: HTMLElement | string) {
+  protected addElement(dom: Element | string) {
     if (typeof (dom) === 'string') {
       this.container.innerHTML += dom
     } else {
@@ -185,7 +185,8 @@ export default class Loading {
     if (this.rendered) {
       return
     }
-    if (!['relative', 'absolute', 'fixed'].includes(this.element.style.position)) {
+
+    if (!['relative', 'absolute', 'fixed'].includes(window.getComputedStyle(this.element).position)) {
       this.element.classList.add(`${this.id}-relative`)
     }
     this.element.classList.add(`${this.id}-lock`)
