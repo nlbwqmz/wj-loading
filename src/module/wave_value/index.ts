@@ -46,9 +46,9 @@ export default class WaveValueLoading extends Loading {
   #createTopValue(value: number) {
     const minInput = 0;
     const maxInput = 100;
-    // 10是父容器border(5+5)和padding(5+5)
-    const minOutput = this.#size / 2 - 20;
-    const maxOutput = (-(this.#size / 2)) - 20;
+    // 10是父容器border(5)和padding(5)
+    const minOutput = this.#size / 2 - 10;
+    const maxOutput = (-(this.#size / 2)) - 10;
     if (!value || value <= 0) {
       return minOutput
     }
