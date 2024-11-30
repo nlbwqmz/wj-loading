@@ -11,6 +11,7 @@ import JellyLoading from "./module/jelly";
 import WaveLoading from "./module/wave";
 import DotExpandLoading from "./module/dot-expand";
 import WaveValueLoading from "./module/wave_value";
+import TextFillLoading from "./module/text_fill";
 
 const Loading = {
   SquareLoading,
@@ -25,6 +26,7 @@ const Loading = {
   JellyLoading,
   WaveLoading,
   DotExpandLoading,
-  WaveValueLoading
+  WaveValueLoading,
+  TextFillLoading
 }
 export default Loading
