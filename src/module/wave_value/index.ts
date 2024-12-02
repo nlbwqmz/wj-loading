@@ -3,6 +3,8 @@ import Loading, {LoadingOption} from "../../core/loading";
 export interface WaveValueLoadingOption extends LoadingOption {
   color?: string | number;
   size?: number;
+  borderSize?: number;
+  paddingSize?: number;
   value?: number;
   fontSize?: string;
   fontColor?: string | number;
@@ -14,6 +16,8 @@ export default class WaveValueLoading extends Loading {
 
   readonly #color: string | number
   readonly #size: number
+  readonly #borderSize: number
+  readonly #paddingSize: number
   #value: number
   readonly #fontSize: string
   readonly #fontColor: string | number
@@ -23,6 +27,8 @@ export default class WaveValueLoading extends Loading {
     super(option)
     this.#color = option.color || '#76DAFF'
     this.#size = option.size || 100
+    this.#borderSize = option.borderSize || 5
+    this.#paddingSize = option.paddingSize || 5
     this.#value = this.#checkValue(option.value || 0)
     this.#fontSize = option.fontSize || '20px'
     this.#fontColor = option.fontColor || '#000'
@@ -64,14 +70,10 @@ export default class WaveValueLoading extends Loading {
     style.innerHTML = `
 .${this.id} {
   background-color: rgba(255, 255, 255, 0.9);
-  position: absolute;
   width: ${this.#size}px;
   height: ${this.#size}px;
-  padding: 5px;
-  border: 5px solid ${this.#color};
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  padding: ${this.#paddingSize}px;
+  border: ${this.#borderSize}px solid ${this.#color};
   border-radius: 50%;
   overflow: hidden;
 }
