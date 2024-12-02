@@ -136,10 +136,10 @@ new Loading.TextLoading({
 |    size     |   100   | 否  |     number      |     尺寸     |
 |    value    |    0    | 否  |     number      | 进度值(0-100) |
 |  fontSize   |  20px   | 否  |     string      |    字体大小    |
-|  fontColor  |  20px   | 否  | string / number |    字体颜色    |
-| fontWeight  |  20px   | 否  | string / number |    字体粗细    |
-| borderSize  |    5    | 否  |     number      |    边框尺寸    |
-| paddingSize |    5    | 否  |     number      |    空隙尺寸    |
+|  fontColor  |  #000   | 否  | string / number |    字体颜色    |
+| fontWeight  | normal  | 否  | string / number |    字体粗细    |
+| borderSize  |    2    | 否  |     number      |    边框尺寸    |
+| paddingSize |    2    | 否  |     number      |    空隙尺寸    |
 
 ### TextFillLoading 参数
 

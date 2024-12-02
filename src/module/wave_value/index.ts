@@ -27,8 +27,8 @@ export default class WaveValueLoading extends Loading {
     super(option)
     this.#color = option.color || '#76DAFF'
     this.#size = option.size || 100
-    this.#borderSize = option.borderSize || 5
-    this.#paddingSize = option.paddingSize || 5
+    this.#borderSize = option.borderSize || 2
+    this.#paddingSize = option.paddingSize || 2
     this.#value = this.#checkValue(option.value || 0)
     this.#fontSize = option.fontSize || '20px'
     this.#fontColor = option.fontColor || '#000'
@@ -52,9 +52,8 @@ export default class WaveValueLoading extends Loading {
   #createTopValue(value: number) {
     const minInput = 0;
     const maxInput = 100;
-    // 10是父容器border(5)和padding(5)
-    const minOutput = this.#size / 2 - 10;
-    const maxOutput = (-(this.#size / 2)) - 10;
+    const minOutput = 0;
+    const maxOutput = -this.#size;
     if (!value || value <= 0) {
       return minOutput
     }
@@ -93,7 +92,7 @@ export default class WaveValueLoading extends Loading {
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 45%;
   transition: top 0.5s ease;
-  transform: translate(-50%, -70%) rotate(0);
+  transform: translate(-50%, -50%) rotate(0);
   -webkit-animation: ${this.id}-rotate 6s linear infinite;
           animation: ${this.id}-rotate 6s linear infinite;
   z-index: 1;
@@ -101,7 +100,7 @@ export default class WaveValueLoading extends Loading {
 .${this.id}-wave::after {
   border-radius: 47%;
   background-color: rgba(255, 255, 255, 0.9);
-  transform: translate(-50%, -70%) rotate(0);
+  transform: translate(-50%, -50%) rotate(0);
   -webkit-animation: ${this.id}-rotate 10s linear -5s infinite;
           animation: ${this.id}-rotate 10s linear -5s infinite;
   z-index: 2;
@@ -120,19 +119,19 @@ export default class WaveValueLoading extends Loading {
 
 @-webkit-keyframes ${this.id}-rotate {
   50% {
-    transform: translate(-50%, -73%) rotate(180deg);
+    transform: translate(-50%, -53%) rotate(180deg);
   }
   100% {
-    transform: translate(-50%, -70%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
 @keyframes ${this.id}-rotate {
   50% {
-    transform: translate(-50%, -73%) rotate(180deg);
+    transform: translate(-50%, -53%) rotate(180deg);
   }
   100% {
-    transform: translate(-50%, -70%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
         `
