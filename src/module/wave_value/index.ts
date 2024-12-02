@@ -70,8 +70,6 @@ export default class WaveValueLoading extends Loading {
     style.innerHTML = `
 .${this.id} {
   background-color: rgba(255, 255, 255, 0.9);
-  width: ${this.#size}px;
-  height: ${this.#size}px;
   padding: ${this.#paddingSize}px;
   border: ${this.#borderSize}px solid ${this.#color};
   border-radius: 50%;
