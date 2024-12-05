@@ -1,6 +1,10 @@
 # wj-loading
 
-开箱即用的loading组件~~~
+![NPM Version](https://img.shields.io/npm/v/wj-loading)
+![NPM Downloads](https://img.shields.io/npm/dw/wj-loading)
+![NPM License](https://img.shields.io/npm/l/wj-loading)
+
+**开箱即用的loading组件~~~**
 
 - [演示](https://nlbwqmz.github.io/wj-loading-pages/)
 - [GITHUB](https://github.com/nlbwqmz/wj-loading)

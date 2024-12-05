@@ -17,6 +17,11 @@ const createCard = () => {
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="title">wj-loading</div>
+  <div class="tag-container">
+    <img alt="NPM Version" src="https://img.shields.io/npm/v/wj-loading">
+    <img alt="NPM Downloads" src="https://img.shields.io/npm/dw/wj-loading">
+    <img alt="NPM License" src="https://img.shields.io/npm/l/wj-loading">
+  </div>
   <div class="desc">
     <div class="bg">yarn add wj-loading</div>
     <div class="bg">npm install wj-loading</div>

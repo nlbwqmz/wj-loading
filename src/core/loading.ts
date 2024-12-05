@@ -10,7 +10,7 @@ export interface LoadingOption {
   // 背景
   background?: string
   zIndex?: number
-  // 延迟remove 解决闪烁问题
+  // 延迟remove
   delayRemove?: number
 }
 
@@ -39,7 +39,7 @@ export default class Loading {
   protected readonly style: HTMLStyleElement
   #childrenStyle?: HTMLStyleElement
   #containerFlexCenter?: boolean
-  protected readonly container: Element
+  protected readonly container: HTMLDivElement
   protected readonly delayRemove?: number
   // 渲染成功后执行
   protected afterRendered?: () => void
@@ -218,15 +218,22 @@ export default class Loading {
     }
     const r = () => {
       this.#observer && this.#observer.disconnect()
-      this.container && this.container.remove()
-      this.style && this.style.remove()
-      this.#childrenStyle && this.#childrenStyle.remove()
-      if (this.element.classList.contains(`${this.id}-relative`)) {
-        this.element.classList.remove(`${this.id}-relative`)
+      // 平滑过渡 处理loading闪烁问题
+      if (this.container) {
+        this.container.style.transition = 'opacity 0.2s linear';
+        this.container.style.opacity = '0'
       }
-      this.element.classList.remove(`${this.id}-lock`)
-      this.rendered = false
-      this.afterRemove && this.afterRemove()
+      setTimeout(() => {
+        this.container && this.container.remove()
+        this.style && this.style.remove()
+        this.#childrenStyle && this.#childrenStyle.remove()
+        if (this.element.classList.contains(`${this.id}-relative`)) {
+          this.element.classList.remove(`${this.id}-relative`)
+        }
+        this.element.classList.remove(`${this.id}-lock`)
+        this.rendered = false
+        this.afterRemove && this.afterRemove()
+      }, 200)
     }
     const delay = delayRemove || this.delayRemove || 0
     if (delay && delay > 0) {
