@@ -1,6 +1,6 @@
 {
   "name": "wj-loading",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "type": "module",
   "main": "dist/wj-loading.umd.js",
   "module": "dist/wj-loading.es.js",
@@ -18,7 +18,8 @@
     "ts",
     "js",
     "web",
-    "h5"
+    "h5",
+    "load"
   ],
   "description": "开箱即用的loading组件",
   "files": [

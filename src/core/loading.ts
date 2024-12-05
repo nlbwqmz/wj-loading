@@ -82,6 +82,10 @@ export default class Loading {
         left: ${this.element.scrollLeft}px;
         top: ${this.element.scrollTop}px;
       }
+      .${this.id}-smooth-remove {
+        transition: opacity 0.2s linear;
+        opacity: 0
+      }
     `
     if (this.#containerFlexCenter === true) {
       styleInnerHTML += `
@@ -201,10 +205,16 @@ export default class Loading {
     this.element.appendChild(this.container)
     this.#listen()
     this.rendered = true
-    if (interval && interval > 0) {
+    let targetInterval
+    if (interval === undefined || interval === null) {
+      targetInterval = this.interval || 0
+    } else {
+      targetInterval = interval
+    }
+    if (targetInterval > 0) {
       setTimeout(() => {
         this.remove()
-      }, interval)
+      }, targetInterval)
     }
     this.afterRendered && this.afterRendered()
   }
@@ -220,11 +230,13 @@ export default class Loading {
       this.#observer && this.#observer.disconnect()
       // 平滑过渡 处理loading闪烁问题
       if (this.container) {
-        this.container.style.transition = 'opacity 0.2s linear';
-        this.container.style.opacity = '0'
+        this.container.classList.add(`${this.id}-smooth-remove`)
       }
       setTimeout(() => {
-        this.container && this.container.remove()
+        if (this.container) {
+          this.container.remove()
+          this.container.classList.remove(`${this.id}-smooth-remove`)
+        }
         this.style && this.style.remove()
         this.#childrenStyle && this.#childrenStyle.remove()
         if (this.element.classList.contains(`${this.id}-relative`)) {
@@ -235,8 +247,13 @@ export default class Loading {
         this.afterRemove && this.afterRemove()
       }, 200)
     }
-    const delay = delayRemove || this.delayRemove || 0
-    if (delay && delay > 0) {
+    let delay
+    if (delayRemove === undefined || delayRemove === null) {
+      delay = this.delayRemove || 0
+    } else {
+      delay = delayRemove
+    }
+    if (delay > 0) {
       setTimeout(() => {
         r()
       }, delay)
