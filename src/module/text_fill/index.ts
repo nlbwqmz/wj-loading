@@ -1,37 +1,64 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 
-export interface TextFillLoadingOption extends LoadingOption {
-  color?: string | number
-  fillColor?: string | number
-  size?: string;
-  text?: string;
-  direction?: 'horizontal' | 'vertical';
+export interface TextFillLoadingOption extends LoadingOption, Partial<TextFillLoadingSupportChangeOption> {
+}
+
+export interface TextFillLoadingSupportChangeOption {
+  color: string
+  fillColor: string
+  size: string;
+  text: string;
+  direction: 'horizontal' | 'vertical';
 }
 
 
 export default class TextFillLoading extends Loading {
 
-  readonly #color: string | number
-  readonly #fillColor: string | number
-  readonly #size: string
-  readonly #text: string
-  readonly #direction: 'horizontal' | 'vertical';
+  readonly #loadingElement: HTMLDivElement
+  readonly #supportChangeObject: TextFillLoadingSupportChangeOption
 
   constructor(option: TextFillLoadingOption = {}) {
     super(option)
-    this.#color = option.color || '#FFF'
-    this.#fillColor = option.color || '#76DAFF'
-    if('horizontal' !== option.direction && 'vertical' !== option.direction) {
-      this.#direction = 'vertical'
+    let direction: 'horizontal' | 'vertical'
+    if ('horizontal' !== option.direction && 'vertical' !== option.direction) {
+      direction = 'vertical'
     } else {
-      this.#direction = option.direction
+      direction = option.direction
     }
-    this.#size = option.size || '40px'
-    this.#text = option.text || 'Loading'
+    this.#supportChangeObject = new Proxy<TextFillLoadingSupportChangeOption>({
+          color: this.getOrDefault(option.color, '#FFF'),
+          fillColor: this.getOrDefault(option.fillColor, '#76DAFF'),
+          size: this.getOrDefault(option.size, '40px'),
+          text: this.getOrDefault(option.text, 'Loading'),
+          direction: direction
+        }, {
+          set: (target: TextFillLoadingSupportChangeOption, key: keyof TextFillLoadingSupportChangeOption, value) => {
+            if (value !== undefined && value !== null) {
+              // @ts-ignore
+              target[key] = value
+              const styleList: (keyof TextFillLoadingSupportChangeOption)[] = ['color', 'fillColor', 'size']
+              if (styleList.includes(key)) {
+                this.setChildrenStyle(this.#createStyle())
+              } else if (key === 'text') {
+                this.#loadingElement.innerHTML = value
+              }
+            }
+            return true
+          }
+        }
+    )
     this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
-    this.addElement(this.#createLoadingElement())
+    this.#loadingElement = this.#createLoadingElement()
+    this.addElement(this.#loadingElement)
     this.finish()
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<TextFillLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #createStyle() {
@@ -39,7 +66,7 @@ export default class TextFillLoading extends Loading {
     const convertResult = this.#convert()
     style.innerHTML = `
 .${this.id} {
-  font-size: ${this.#size};
+  font-size: ${this.#supportChangeObject.size};
   font-weight: bold;
   display: inline-block;
   letter-spacing: 2px;
@@ -48,7 +75,7 @@ export default class TextFillLoading extends Loading {
   box-sizing: border-box;
 }
 .${this.id}::after {
-  content: '${this.#text}';
+  content: '${this.#supportChangeObject.text}';
   position: absolute;
   left: 0;
   top: 0;
@@ -61,15 +88,14 @@ export default class TextFillLoading extends Loading {
 }
 ${convertResult.keyframes}
         `
-
     return style
   }
 
-  #convert(){
+  #convert() {
     const result: { backgroundColor?: number | string, fillColor?: number | string, keyframes?: string } = {}
-    if(this.#direction === 'horizontal'){
-      result.backgroundColor = this.#color
-      result.fillColor = this.#fillColor
+    if (this.#supportChangeObject.direction === 'horizontal') {
+      result.backgroundColor = this.#supportChangeObject.color
+      result.fillColor = this.#supportChangeObject.fillColor
       result.keyframes = `
           @keyframes ${this.id}-animloader {
             0% {
@@ -80,9 +106,9 @@ ${convertResult.keyframes}
             }
           }
         `
-    } else if (this.#direction === 'vertical'){
-      result.backgroundColor = this.#fillColor
-      result.fillColor = this.#color
+    } else if (this.#supportChangeObject.direction === 'vertical') {
+      result.backgroundColor = this.#supportChangeObject.fillColor
+      result.fillColor = this.#supportChangeObject.color
       result.keyframes = `
           @keyframes ${this.id}-animloader {
             0% {
@@ -100,7 +126,7 @@ ${convertResult.keyframes}
   #createLoadingElement() {
     const divElement = document.createElement('div');
     divElement.classList.add(this.id)
-    divElement.innerHTML = this.#text
+    divElement.innerHTML = this.#supportChangeObject.text
     return divElement
   }
 

@@ -13,6 +13,15 @@ export default defineConfig(({mode}) => {
       },
       rollupOptions: {
         external: ["src/main.ts"], // 指定外部依赖，如果没有依赖可留空,
+        output: [
+          {
+            format: 'es'
+          },
+          {
+            format: 'umd', // 输出UMD格式，支持script引入全局变量
+            name: 'Loading', //全局变量名
+          },
+        ],
       },
     },
     esbuild: {

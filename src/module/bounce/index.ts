@@ -1,24 +1,52 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 
-export interface BounceLoadingOption extends LoadingOption {
-  color?: string | number;
-  size?: string;
+export interface BounceLoadingOption extends LoadingOption, Partial<BounceLoadingSupportChangeOption> {
+}
+
+export interface BounceLoadingSupportChangeOption {
+  color: string;
+  size: string;
 }
 
 
 export default class BounceLoading extends Loading {
 
-  readonly #color: string | number
-  readonly #size: string
+  readonly #loadingElement: HTMLDivElement
+  readonly #supportChangeObject: BounceLoadingSupportChangeOption
 
   constructor(option: BounceLoadingOption = {}) {
     super(option)
-    this.#color = option.color || '#333'
-    this.#size = option.size || '20px'
+    this.#supportChangeObject = new Proxy<BounceLoadingSupportChangeOption>({
+      color: this.getOrDefault(option.color, '#333'),
+      size: this.getOrDefault(option.size, '20px')
+    }, {
+      set: (target: BounceLoadingSupportChangeOption, key: keyof BounceLoadingSupportChangeOption, value) => {
+        target[key] = value
+        const styleList: (keyof BounceLoadingSupportChangeOption)[] = ['color', 'size']
+        if (styleList.includes(key)) {
+          this.#loadingElement.style.setProperty(this.convertToCssVariableName(key), value)
+        }
+        return true
+      }
+    })
     this.setContainerFlexCenter()
+    this.#loadingElement = this.#createLoadingElement();
+    this.#setVariable()
+    this.addElement(this.#loadingElement)
     this.setChildrenStyle(this.#createStyle())
-    this.addElement(this.#createLoadingElement())
     this.finish()
+  }
+
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--color', this.#supportChangeObject.color)
+    this.#loadingElement.style.setProperty('--size', this.#supportChangeObject.size)
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<BounceLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #createStyle() {
@@ -28,9 +56,9 @@ export default class BounceLoading extends Loading {
        text-align: center;
       }
       .${this.id}-bounce>div {
-       width: ${this.#size};
-       height: ${this.#size};
-       background-color: ${this.#color};
+       width: var(--size);
+       height: var(--size);
+       background-color: var(--color);
        border-radius: 100%;
        display: inline-block;
        animation: ${this.id}-sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -56,13 +84,9 @@ export default class BounceLoading extends Loading {
   }
 
   #createLoadingElement() {
-    return `
-        <div class="${this.id}-bounce">
-          <div class="${this.id}-bounce1"></div>
-          <div class="${this.id}-bounce2"></div>
-          <div class="${this.id}-bounce3"></div>
-        </div>
-        `
+    const loadingElement = document.createElement('div');
+    loadingElement.classList.add(`${this.id}-bounce`)
+    loadingElement.innerHTML = `<div class="${this.id}-bounce1"></div><div class="${this.id}-bounce2"></div><div class="${this.id}-bounce3"></div>`
+    return loadingElement
   }
-
 }

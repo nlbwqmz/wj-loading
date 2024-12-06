@@ -1,21 +1,51 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 
-export interface CircleLoaderLoadingOption extends LoadingOption {
-  color?: string | number;
+export interface CircleLoaderLoadingOption extends LoadingOption, Partial<CircleLoaderLoadingSupportChangeOption> {
 }
 
+export interface CircleLoaderLoadingSupportChangeOption {
+  color: string;
+}
 
 export default class CircleLoaderLoading extends Loading {
 
-  readonly #color: string | number
+  readonly #loadingElement: HTMLDivElement
+  readonly #supportChangeObject: CircleLoaderLoadingSupportChangeOption
 
   constructor(option: CircleLoaderLoadingOption = {}) {
     super(option)
-    this.#color = option.color || '#F44336'
+    this.#supportChangeObject = new Proxy<CircleLoaderLoadingSupportChangeOption>({
+      color: this.getOrDefault(option.color, '#F44336')
+    }, {
+      set: (target: CircleLoaderLoadingSupportChangeOption, key: keyof CircleLoaderLoadingSupportChangeOption, value) => {
+        if (value !== undefined && value !== null) {
+          // @ts-ignore
+          target[key] = value
+          const styleList: (keyof CircleLoaderLoadingSupportChangeOption)[] = ['color']
+          if (styleList.includes(key)) {
+            this.#loadingElement.style.setProperty(this.convertToCssVariableName(key), value)
+          }
+        }
+        return true
+      }
+    })
     this.setContainerFlexCenter()
+    this.#loadingElement = this.#createLoadingElement()
+    this.#setVariable()
+    this.addElement(this.#loadingElement)
     this.setChildrenStyle(this.#createStyle())
-    this.addElement(this.#createLoadingElement())
     this.finish()
+  }
+
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--color', this.#supportChangeObject.color)
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<CircleLoaderLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #createStyle() {
@@ -30,7 +60,7 @@ export default class CircleLoaderLoading extends Loading {
           .${this.id} div {
             height: 10px;
             width: 10px;
-            background-color: ${this.#color};
+            background-color: var(--color);
             border-radius: 50%;
             position: absolute;
             -webkit-animation: 0.8s ${this.id}-opaque ease-in-out infinite both;
@@ -102,18 +132,10 @@ export default class CircleLoaderLoading extends Loading {
   }
 
   #createLoadingElement() {
-    return `
-        <div class="${this.id}">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        `
+    const loadingElement = document.createElement('div');
+    loadingElement.classList.add(this.id)
+    loadingElement.innerHTML = '<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>'
+    return loadingElement
   }
 
 }

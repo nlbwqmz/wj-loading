@@ -1,21 +1,52 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 
-export interface DotExpandLoadingOption extends LoadingOption {
-  color?: string | number;
+export interface DotExpandLoadingOption extends LoadingOption, Partial<DotExpandLoadingSupportChangeOption> {
+}
+
+export interface DotExpandLoadingSupportChangeOption {
+  color: string;
 }
 
 
 export default class DotExpandLoading extends Loading {
 
-  readonly #color: string | number
+  readonly #loadingElement: HTMLDivElement
+  readonly #supportChangeObject: DotExpandLoadingSupportChangeOption
 
   constructor(option: DotExpandLoadingOption = {}) {
     super(option)
-    this.#color = option.color || '#000'
+    this.#supportChangeObject = new Proxy<DotExpandLoadingSupportChangeOption>({
+      color: this.getOrDefault(option.color, '#000')
+    }, {
+      set: (target: DotExpandLoadingSupportChangeOption, key: keyof DotExpandLoadingSupportChangeOption, value) => {
+        if (value !== undefined && value !== null) {
+          // @ts-ignore
+          target[key] = value
+          const styleList: (keyof DotExpandLoadingSupportChangeOption)[] = ['color']
+          if (styleList.includes(key)) {
+            this.#loadingElement.style.setProperty(this.convertToCssVariableName(key), value)
+          }
+        }
+        return true
+      }
+    })
     this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
-    this.addElement(this.#createLoadingElement())
+    this.#loadingElement = this.#createLoadingElement()
+    this.#setVariable()
+    this.addElement(this.#loadingElement)
     this.finish()
+  }
+
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--color', this.#supportChangeObject.color)
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<DotExpandLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #createStyle() {
@@ -25,7 +56,7 @@ export default class DotExpandLoading extends Loading {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: ${this.#color};
+  background-color: var(--color);
 
   animation: ${this.id}-ball-scale infinite linear 0.75s;
 }
@@ -45,7 +76,9 @@ export default class DotExpandLoading extends Loading {
   }
 
   #createLoadingElement() {
-    return `<div class="${this.id}"></div>`
+    const loadingElement = document.createElement('div');
+    loadingElement.classList.add(this.id)
+    return loadingElement
   }
 
 }

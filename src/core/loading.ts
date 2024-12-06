@@ -1,26 +1,33 @@
-export interface LoadingOption {
+export interface LoadingSupportChangeOption {
+  // 移除后执行
+  afterRemove: () => void
+  // 背景
+  background: string
+  zIndex: string
+  // 执行时时间（毫秒）
+  interval: number
+  // 延迟remove
+  delayRemove: number
+}
+
+export interface LoadingOption extends Partial<LoadingSupportChangeOption> {
   // 节点
   element?: string | Element | null
   // 立即执行
   immediate?: boolean
-  // 执行时时间（毫秒）
-  interval?: number
-  // 移除后执行
-  afterRemove?: () => void
-  // 背景
-  background?: string
-  zIndex?: number
-  // 延迟remove
-  delayRemove?: number
 }
 
 const generateId = (length: number = 8) => {
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let id = '';
+  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charsetLength = charset.length;
+  let randomString = '';
+  const buffer = new Uint32Array(Math.ceil(length / 4));
+  window.crypto.getRandomValues(buffer);
   for (let i = 0; i < length; i++) {
-    id += possible.charAt(Math.floor(Math.random() * possible.length));
+    const randomValue = buffer[Math.floor(i / 4)] >>> (i % 4 * 8) & 0xFF;
+    randomString += charset[randomValue % charsetLength];
   }
-  return id;
+  return randomString;
 }
 
 export default class Loading {
@@ -30,41 +37,77 @@ export default class Loading {
   protected readonly element: Element
   // 立即执行
   protected readonly immediate?: boolean
-  // 执行时时间（毫秒）
-  protected readonly interval?: number
-  // 移除后执行
-  protected readonly afterRemove?: () => void
-  // 背景
-  protected readonly background: string
   protected readonly style: HTMLStyleElement
   #childrenStyle?: HTMLStyleElement
   #containerFlexCenter?: boolean
   protected readonly container: HTMLDivElement
-  protected readonly delayRemove?: number
   // 渲染成功后执行
   protected afterRendered?: () => void
   // 元素宽或高改变后触发
   protected handleElementChange?: () => void
-  protected zIndex?: number
   #currentOffsetHeight?: number
   #currentOffsetWidth?: number
   #observer?: ResizeObserver
+  readonly #supportChangeObject: LoadingSupportChangeOption
 
   constructor(option: LoadingOption = {}) {
+    this.#supportChangeObject = new Proxy<LoadingSupportChangeOption>({
+      afterRemove: this.getOrDefault(option.afterRemove, () => {
+      }),
+      background: this.getOrDefault(option.background, 'rgba(0, 0, 0, 0.2)'),
+      zIndex: this.getOrDefault(option.zIndex, '2000'),
+      interval: this.getOrDefault(option.interval, 0),
+      delayRemove: this.getOrDefault(option.delayRemove, 0),
+    }, {
+      set: (target: LoadingSupportChangeOption, key: keyof LoadingSupportChangeOption, value) => {
+        if (value !== undefined && value !== null) {
+          // @ts-ignore
+          target[key] = value
+          const styleList: (keyof LoadingSupportChangeOption)[] = ['background', 'zIndex']
+          if (styleList.includes(key)) {
+            this.container.style.setProperty(this.convertToCssVariableName(key), value)
+          }
+        }
+        return true
+      }
+    })
     this.id = `wj-loading-${generateId()}`
     this.rendered = false
     this.element = this.#selectElement(option.element)
     this.immediate = option.immediate
-    this.interval = option.interval
-    this.delayRemove = option.delayRemove
-    this.afterRemove = option.afterRemove
-    this.background = option.background || 'rgba(0, 0, 0, 0.2)'
-    this.zIndex = this.zIndex || 2000
     this.style = document.createElement('style')
     this.container = document.createElement('div')
   }
 
-  #createStyleInnerHTML = (height: number, width: number) => {
+  protected getOrDefault(value: any, defaultValue: any) {
+    return value !== undefined && value != null ? value : defaultValue
+  }
+
+  #setVariable(width: number, height: number) {
+    this.container.style.setProperty('--background', this.#supportChangeObject.background)
+    this.container.style.setProperty('--z-index', this.#supportChangeObject.zIndex)
+    this.#setSizeVariable(width, height)
+  }
+
+  #setSizeVariable(width: number, height: number) {
+    this.container.style.setProperty('--left', this.element.scrollLeft + 'px')
+    this.container.style.setProperty('--top', this.element.scrollTop + 'px')
+    this.container.style.setProperty('--width', width + 'px')
+    this.container.style.setProperty('--height', height + 'px')
+  }
+
+  // 将参数名转为css变量名
+  protected convertToCssVariableName(name: string) {
+    return '--' + name.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption>) {
+    if (option) {
+      Object.assign(this.#supportChangeObject, option)
+    }
+  }
+
+  #createStyleInnerHTML = () => {
     let styleInnerHTML = `
       .${this.id}-relative {
         position: relative;
@@ -74,13 +117,14 @@ export default class Loading {
       }
       .${this.id}-container {
         user-select: none !important;
-        z-index: ${this.zIndex};
-        background: ${this.background};
+        z-index: var(--z-index);
+        background: var(--background);
         position: absolute;
-        width: ${width}px;
-        height: ${height}px;
-        left: ${this.element.scrollLeft}px;
-        top: ${this.element.scrollTop}px;
+        width: var(--width);
+        height: var(--height);
+        left: var(--left);
+        top: var(--top);
+        transition: background 0.2s linear;
       }
       .${this.id}-smooth-remove {
         transition: opacity 0.2s linear;
@@ -108,7 +152,8 @@ export default class Loading {
     const height = this.element === document.body ? window.innerHeight : boundingClientRect.height
     this.#currentOffsetWidth = width
     this.#currentOffsetHeight = height
-    this.style.innerHTML = this.#createStyleInnerHTML(height, width)
+    this.#setVariable(width, height)
+    this.style.innerHTML = this.#createStyleInnerHTML()
   }
 
   #listen() {
@@ -119,7 +164,7 @@ export default class Loading {
       if (this.#currentOffsetHeight !== height || this.#currentOffsetWidth !== width) {
         this.#currentOffsetWidth = width
         this.#currentOffsetHeight = height
-        this.style.innerHTML = this.#createStyleInnerHTML(height, width)
+        this.#setSizeVariable(width, height)
         this.handleElementChange && this.handleElementChange()
       }
     })
@@ -170,19 +215,15 @@ export default class Loading {
   /**
    * 添加节点
    */
-  protected addElement(dom: Element | string) {
-    if (typeof (dom) === 'string') {
-      this.container.innerHTML += dom
-    } else {
-      this.container.appendChild(dom)
-    }
+  protected addElement(dom: Element) {
+    this.container.appendChild(dom)
   }
 
   protected finish() {
     this.#initContainerStyle()
     this.#initContainerElement()
     if (this.immediate) {
-      this.loading(this.interval)
+      this.loading(this.#supportChangeObject.interval)
     }
   }
 
@@ -207,7 +248,7 @@ export default class Loading {
     this.rendered = true
     let targetInterval
     if (interval === undefined || interval === null) {
-      targetInterval = this.interval || 0
+      targetInterval = this.#supportChangeObject.interval || 0
     } else {
       targetInterval = interval
     }
@@ -244,12 +285,12 @@ export default class Loading {
         }
         this.element.classList.remove(`${this.id}-lock`)
         this.rendered = false
-        this.afterRemove && this.afterRemove()
+        this.#supportChangeObject.afterRemove && this.#supportChangeObject.afterRemove()
       }, 200)
     }
     let delay
     if (delayRemove === undefined || delayRemove === null) {
-      delay = this.delayRemove || 0
+      delay = this.#supportChangeObject.delayRemove || 0
     } else {
       delay = delayRemove
     }
@@ -260,6 +301,5 @@ export default class Loading {
     } else {
       r()
     }
-
   }
 }

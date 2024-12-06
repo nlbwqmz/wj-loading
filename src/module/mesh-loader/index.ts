@@ -1,20 +1,51 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 
-export interface MeshLoaderLoadingOption extends LoadingOption {
-  color?: string | number;
+export interface MeshLoaderLoadingOption extends LoadingOption, Partial<MeshLoaderLoadingSupportChangeOption> {
+}
+
+export interface MeshLoaderLoadingSupportChangeOption {
+  color: string;
 }
 
 export default class MeshLoaderLoading extends Loading {
 
-  readonly #color: string | number;
+  readonly #loadingElement: HTMLDivElement;
+  readonly #supportChangeObject: MeshLoaderLoadingSupportChangeOption;
 
   constructor(option: MeshLoaderLoadingOption = {}) {
     super(option)
-    this.#color = option.color || '#F44336'
+    this.#supportChangeObject = new Proxy<MeshLoaderLoadingSupportChangeOption>({
+      color: this.getOrDefault(option.color, '#F44336')
+    }, {
+      set: (target: MeshLoaderLoadingSupportChangeOption, key: keyof MeshLoaderLoadingSupportChangeOption, value) => {
+        if (value !== undefined && value !== null) {
+          // @ts-ignore
+          target[key] = value
+          const styleList: (keyof MeshLoaderLoadingSupportChangeOption)[] = ['color']
+          if (styleList.includes(key)) {
+            this.#loadingElement.style.setProperty(this.convertToCssVariableName(key), value)
+          }
+        }
+        return true
+      }
+    })
     this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
-    this.addElement(this.#createLoadingElement())
+    this.#loadingElement = this.#createLoadingElement()
+    this.#setVariable()
+    this.addElement(this.#loadingElement)
     this.finish()
+  }
+
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--color', this.#supportChangeObject.color)
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<MeshLoaderLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #createStyle() {
@@ -29,7 +60,7 @@ export default class MeshLoaderLoading extends Loading {
             width: 30px;
             height: 30px;
             position: absolute;
-            background: ${this.#color};
+            background: var(--color);
             border-radius: 50%;
             margin: -15px;
             -webkit-animation: ${this.id}-mesh 3s ease-in-out infinite -1.5s;
@@ -111,8 +142,9 @@ export default class MeshLoaderLoading extends Loading {
   }
 
   #createLoadingElement() {
-    return `
-        <div class="${this.id}">
+    const loadingElement = document.createElement('div');
+    loadingElement.classList.add(this.id)
+    loadingElement.innerHTML = `
           <div class="${this.id}-set-one">
             <div class="${this.id}-circle"></div>
             <div class="${this.id}-circle"></div>
@@ -121,8 +153,8 @@ export default class MeshLoaderLoading extends Loading {
             <div class="${this.id}-circle"></div>
             <div class="${this.id}-circle"></div>
           </div>
-        </div>
-        `
+    `
+    return loadingElement
   }
 
 }

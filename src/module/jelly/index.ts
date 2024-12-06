@@ -1,26 +1,58 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 
-export interface JellyLoadingOption extends LoadingOption {
-  color?: string | number
-  shadowColor?: string | number
-  shadowOpacity?: number
+export interface JellyLoadingOption extends LoadingOption, Partial<JellyLoadingSupportChangeOption> {
+}
+
+export interface JellyLoadingSupportChangeOption {
+  color: string
+  shadowColor: string
+  shadowOpacity: string
 }
 
 
 export default class JellyLoading extends Loading {
-  readonly #color: string | number
-  readonly #shadowColor: string | number
-  readonly #shadowOpacity: number
+  readonly #loadingElement: HTMLDivElement
+  readonly #supportChangeObject: JellyLoadingSupportChangeOption
 
   constructor(option: JellyLoadingOption = {}) {
     super(option)
-    this.#color = option.color || '#fff'
-    this.#shadowColor = option.shadowColor || '#000'
-    this.#shadowOpacity = option.shadowOpacity || 0.1
+    this.#supportChangeObject = new Proxy<JellyLoadingSupportChangeOption>({
+          color: this.getOrDefault(option.color, '#fff'),
+          shadowColor: this.getOrDefault(option.shadowColor, '#000'),
+          shadowOpacity: this.getOrDefault(option.shadowOpacity, '0.1')
+        }, {
+          set: (target: JellyLoadingSupportChangeOption, key: keyof JellyLoadingSupportChangeOption, value) => {
+            if (value !== undefined && value !== null) {
+              // @ts-ignore
+              target[key] = value
+              const styleList: (keyof JellyLoadingSupportChangeOption)[] = ['color', 'shadowColor', 'shadowOpacity']
+              if (styleList.includes(key)) {
+                this.#loadingElement.style.setProperty(this.convertToCssVariableName(key), value)
+              }
+            }
+            return true
+          }
+        }
+    )
     this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
-    this.addElement(this.#createLoadingElement())
+    this.#loadingElement = this.#createLoadingElement()
+    this.#setVariable()
+    this.addElement(this.#loadingElement)
     this.finish()
+  }
+
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--color', this.#supportChangeObject.color)
+    this.#loadingElement.style.setProperty('--shadow-color', this.#supportChangeObject.shadowColor)
+    this.#loadingElement.style.setProperty('--shadow-opacity', this.#supportChangeObject.shadowOpacity)
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<JellyLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #createStyle() {
@@ -34,7 +66,7 @@ export default class JellyLoading extends Loading {
 .${this.id}-box {
   width: 50px;
   height: 50px;
-  background: ${this.#color};
+  background: var(--color);
   animation: ${this.id}-animate .5s linear infinite;
   position: absolute;
   top: 0;
@@ -54,8 +86,8 @@ export default class JellyLoading extends Loading {
 .${this.id}-shadow { 
   width: 50px;
   height: 5px;
-  background: ${this.#shadowColor};
-  opacity: ${this.#shadowOpacity};
+  background: var(--shadow-color);
+  opacity: var(--shadow-opacity);
   position: absolute;
   top: 59px;
   left: 0;
@@ -72,12 +104,13 @@ export default class JellyLoading extends Loading {
   }
 
   #createLoadingElement() {
-    return `
-        <div class="${this.id}">
-          <div class="${this.id}-shadow"></div>
-          <div class="${this.id}-box"></div>
-        </div>
-        `
+    const loadingElement = document.createElement('div');
+    loadingElement.classList.add(this.id)
+    loadingElement.innerHTML = `
+      <div class="${this.id}-shadow"></div>
+      <div class="${this.id}-box"></div>
+    `
+    return loadingElement
   }
 
 }

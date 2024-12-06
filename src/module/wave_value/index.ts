@@ -1,42 +1,86 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 
-export interface WaveValueLoadingOption extends LoadingOption {
-  color?: string | number;
-  size?: number;
-  borderSize?: number;
-  paddingSize?: number;
-  value?: number;
-  fontSize?: string;
-  fontColor?: string | number;
-  fontWeight?: string | number;
+export interface WaveValueLoadingOption extends LoadingOption, Partial<WaveValueLoadingSupportChangeOption> {
+}
+
+export interface WaveValueLoadingSupportChangeOption {
+  color: string;
+  size: number;
+  borderSize: string;
+  paddingSize: string;
+  value: number;
+  fontSize: string;
+  fontColor: string;
+  fontWeight: string;
 }
 
 
 export default class WaveValueLoading extends Loading {
 
-  readonly #color: string | number
-  readonly #size: number
-  readonly #borderSize: number
-  readonly #paddingSize: number
-  #value: number
-  readonly #fontSize: string
-  readonly #fontColor: string | number
-  readonly #fontWeight: string | number
+  readonly #loadingElement: HTMLDivElement
+  readonly #supportChangeObject: WaveValueLoadingSupportChangeOption
 
   constructor(option: WaveValueLoadingOption = {}) {
     super(option)
-    this.#color = option.color || '#76DAFF'
-    this.#size = option.size || 100
-    this.#borderSize = option.borderSize || 2
-    this.#paddingSize = option.paddingSize || 2
-    this.#value = this.#checkValue(option.value || 0)
-    this.#fontSize = option.fontSize || '20px'
-    this.#fontColor = option.fontColor || '#000'
-    this.#fontWeight = option.fontWeight || 'normal'
+    this.#supportChangeObject = new Proxy<WaveValueLoadingSupportChangeOption>({
+          color: this.getOrDefault(option.color, '#76DAFF'),
+          size: this.getOrDefault(option.size, 100),
+          borderSize: this.getOrDefault(option.borderSize, '2px'),
+          paddingSize: this.getOrDefault(option.paddingSize, '2px'),
+          value: this.#checkValue(option.value || 0),
+          fontSize: this.getOrDefault(option.fontSize, '20px'),
+          fontColor: this.getOrDefault(option.fontColor, '#000'),
+          fontWeight: this.getOrDefault(option.fontWeight, 'normal')
+        }, {
+          set: (target: WaveValueLoadingSupportChangeOption, key: keyof WaveValueLoadingSupportChangeOption, value) => {
+            if (value !== undefined && value !== null) {
+              // @ts-ignore
+              target[key] = value
+              if (key === 'value') {
+                const querySelector = document.querySelector(`.${this.id}-text`);
+                if (querySelector) {
+                  querySelector.innerHTML = value + '%'
+                }
+                this.#loadingElement.style.setProperty('--top', this.#createTopValue(value) + 'px')
+              } else if (key === 'size') {
+                this.#loadingElement.style.setProperty('--size', value + 'px')
+                this.#loadingElement.style.setProperty('--top', this.#createTopValue(target.value) + 'px')
+              } else {
+                const styleList: (keyof WaveValueLoadingSupportChangeOption)[] = ['color', 'borderSize', 'paddingSize', 'fontSize', 'fontColor', 'fontWeight']
+                if (styleList.includes(key)) {
+                  this.#loadingElement.style.setProperty(this.convertToCssVariableName(key), value)
+                }
+              }
+
+            }
+            return true
+          }
+        }
+    )
     this.setContainerFlexCenter()
-    this.setChildrenStyle(this.#createStyle(this.#value))
-    this.addElement(this.#createLoadingElement())
+    this.setChildrenStyle(this.#createStyle())
+    this.#loadingElement = this.#createLoadingElement()
+    this.#setVariable()
+    this.addElement(this.#loadingElement)
     this.finish()
+  }
+
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--top', this.#createTopValue(this.#supportChangeObject.value) + 'px')
+    this.#loadingElement.style.setProperty('--size', this.#supportChangeObject.size + 'px')
+    this.#loadingElement.style.setProperty('--color', this.#supportChangeObject.color)
+    this.#loadingElement.style.setProperty('--border-size', this.#supportChangeObject.borderSize)
+    this.#loadingElement.style.setProperty('--padding-size', this.#supportChangeObject.paddingSize)
+    this.#loadingElement.style.setProperty('--font-size', this.#supportChangeObject.fontSize)
+    this.#loadingElement.style.setProperty('--font-color', this.#supportChangeObject.fontColor)
+    this.#loadingElement.style.setProperty('--font-weight', this.#supportChangeObject.fontWeight)
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<WaveValueLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #checkValue(value: number) {
@@ -53,7 +97,7 @@ export default class WaveValueLoading extends Loading {
     const minInput = 0;
     const maxInput = 100;
     const minOutput = 0;
-    const maxOutput = -this.#size;
+    const maxOutput = -this.#supportChangeObject.size;
     if (!value || value <= 0) {
       return minOutput
     }
@@ -63,31 +107,30 @@ export default class WaveValueLoading extends Loading {
     return minOutput + ((value - minInput) / (maxInput - minInput)) * (maxOutput - minOutput);
   }
 
-  #createStyle(value: number) {
-    const top = this.#createTopValue(value)
+  #createStyle() {
     const style = document.createElement('style')
     style.innerHTML = `
 .${this.id} {
   background-color: rgba(255, 255, 255, 0.9);
-  padding: ${this.#paddingSize}px;
-  border: ${this.#borderSize}px solid ${this.#color};
+  padding: var(--padding-size);
+  border: var(--border-size) solid var(--color);
   border-radius: 50%;
   overflow: hidden;
 }
 
 .${this.id}-wave {
   position: relative;
-  width: ${this.#size}px;
-  height: ${this.#size}px;
-  background-color: ${this.#color};
+  width: var(--size);
+  height: var(--size);
+  background-color: var(--color);
   border-radius: 50%;
 }
 .${this.id}-wave::before, .${this.id}-wave::after {
   content: "";
   position: absolute;
-  width: ${this.#size * 2}px;
-  height: ${this.#size * 2}px;
-  top: ${top}px;
+  width: calc(var(--size) * 2);
+  height: calc(var(--size) * 2);
+  top: var(--top);
   left: 50%;
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 45%;
@@ -111,9 +154,9 @@ export default class WaveValueLoading extends Loading {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: ${this.#fontSize};
-  color: ${this.#fontColor};
-  font-weight: ${this.#fontWeight};
+  font-size: var(--font-size);
+  color: var(--font-color);
+  font-weight: var(--font-weight);
   z-index: 10;
 }
 
@@ -139,15 +182,13 @@ export default class WaveValueLoading extends Loading {
   }
 
   #createLoadingElement() {
-    return `<div class="${this.id}"><div class="${this.id}-wave"></div><div class="${this.id}-text">${this.#value}%</div></div>`
+    const loadingElement = document.createElement('div');
+    loadingElement.classList.add(this.id)
+    loadingElement.innerHTML = `<div class="${this.id}-wave"></div><div class="${this.id}-text">${this.#supportChangeObject.value}%</div>`
+    return loadingElement
   }
 
   setValue(value: number) {
-    this.#value = this.#checkValue(value)
-    this.setChildrenStyle(this.#createStyle(this.#value))
-    const text = document.querySelector(`.${this.id}-text`);
-    if (text) {
-      text.innerHTML = `${value}%`
-    }
+    this.#supportChangeObject.value = value
   }
 }

@@ -1,24 +1,64 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 import {FixedLengthArray} from "../../core/types";
 
-export interface TripleSpinnerLoadingOption extends LoadingOption {
-  color?: FixedLengthArray<string | number, 3>
-  size?: string;
+export interface TripleSpinnerLoadingOption extends LoadingOption, Partial<TripleSpinnerLoadingSupportChangeOption> {
+}
+
+export interface TripleSpinnerLoadingSupportChangeOption {
+  color: FixedLengthArray<string, 3>
+  size: string;
 }
 
 export default class TripleSpinnerLoading extends Loading {
 
-  readonly #color: FixedLengthArray<string | number, 3>
-  readonly #size: string
+  readonly #loadingElement: HTMLDivElement
+  readonly #supportChangeObject: TripleSpinnerLoadingSupportChangeOption
 
   constructor(option: TripleSpinnerLoadingOption = {}) {
     super(option)
-    this.#color = option.color && option.color.length >= 3 ? option.color : ['#FF5722', '#FF9800', '#FFC107']
-    this.#size = option.size || '100px'
+    this.#supportChangeObject = new Proxy<TripleSpinnerLoadingSupportChangeOption>({
+          color: option.color && option.color.length >= 3 ? option.color : ['#FF5722', '#FF9800', '#FFC107'],
+          size: this.getOrDefault(option.size, '100px')
+        }, {
+          set: (target: TripleSpinnerLoadingSupportChangeOption, key: keyof TripleSpinnerLoadingSupportChangeOption, value) => {
+            if (value !== undefined && value !== null) {
+              // @ts-ignore
+              target[key] = value
+              const styleList: (keyof TripleSpinnerLoadingSupportChangeOption)[] = ['size']
+              if (key === 'color') {
+                if (value && value >= 3) {
+                  this.#loadingElement.style.setProperty('--color-0', value[0])
+                  this.#loadingElement.style.setProperty('--color-1', value[1])
+                  this.#loadingElement.style.setProperty('--color-2', value[2])
+                }
+              } else if (styleList.includes(key)) {
+                this.#loadingElement.style.setProperty(this.convertToCssVariableName(key), value)
+              }
+            }
+            return true
+          }
+        }
+    )
     this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
-    this.addElement(this.#createLoadingElement())
+    this.#loadingElement = this.#createLoadingElement()
+    this.#setVariable()
+    this.addElement(this.#loadingElement)
     this.finish()
+  }
+
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--color-0', this.#supportChangeObject.color[0])
+    this.#loadingElement.style.setProperty('--color-1', this.#supportChangeObject.color[1])
+    this.#loadingElement.style.setProperty('--color-2', this.#supportChangeObject.color[2])
+    this.#loadingElement.style.setProperty('--size', this.#supportChangeObject.size)
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<TripleSpinnerLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #createStyle() {
@@ -27,11 +67,11 @@ export default class TripleSpinnerLoading extends Loading {
       .${this.id} {
         display: block;
         position: relative;
-        width: ${this.#size};
-        height: ${this.#size};
+        width: var(--size);
+        height: var(--size);
         border-radius: 50%;
         border: 4px solid transparent;
-        border-top: 4px solid ${this.#color[0]};
+        border-top: 4px solid var(--color-0);
         -webkit-animation: ${this.id}-spin 2s linear infinite;
         animation: ${this.id}-spin 2s linear infinite;
       }
@@ -48,7 +88,7 @@ export default class TripleSpinnerLoading extends Loading {
         left: 5px;
         right: 5px;
         bottom: 5px;
-        border-top-color: ${this.#color[1]};
+        border-top-color: var(--color-1);
         -webkit-animation: ${this.id}-spin 3s linear infinite;
         animation: ${this.id}-spin 3.5s linear infinite;
       }
@@ -57,7 +97,7 @@ export default class TripleSpinnerLoading extends Loading {
         left: 15px;
         right: 15px;
         bottom: 15px;
-        border-top-color: ${this.#color[2]};
+        border-top-color: var(--color-2);
         -webkit-animation: ${this.id}-spin 1.5s linear infinite;
         animation: ${this.id}-spin 1.75s linear infinite;
       }
@@ -100,9 +140,9 @@ export default class TripleSpinnerLoading extends Loading {
   }
 
   #createLoadingElement() {
-    return `
-        <div class="${this.id}"></div>
-        `
+    const loadingElement = document.createElement('div');
+    loadingElement.classList.add(this.id)
+    return loadingElement
   }
 
 }

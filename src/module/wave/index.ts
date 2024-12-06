@@ -1,21 +1,52 @@
-import Loading, {LoadingOption} from "../../core/loading";
+import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
 
-export interface WaveLoadingOption extends LoadingOption {
-  color?: string | number;
+export interface WaveLoadingOption extends LoadingOption, Partial<WaveLoadingSupportChangeOption> {
+}
+
+export interface WaveLoadingSupportChangeOption {
+  color: string;
 }
 
 
 export default class WaveLoading extends Loading {
 
-  readonly #color: string | number
+  readonly #loadingElement: HTMLDivElement
+  readonly #supportChangeObject: WaveLoadingSupportChangeOption
 
   constructor(option: WaveLoadingOption = {}) {
     super(option)
-    this.#color = option.color || '#000'
+    this.#supportChangeObject = new Proxy<WaveLoadingSupportChangeOption>({
+      color: this.getOrDefault(option.color, '#000')
+    }, {
+      set: (target: WaveLoadingSupportChangeOption, key: keyof WaveLoadingSupportChangeOption, value) => {
+        if (value !== undefined && value !== null) {
+          // @ts-ignore
+          target[key] = value
+          const styleList: (keyof WaveLoadingSupportChangeOption)[] = ['color']
+          if (styleList.includes(key)) {
+            this.#loadingElement.style.setProperty(this.convertToCssVariableName(key), value)
+          }
+        }
+        return true
+      }
+    })
     this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
-    this.addElement(this.#createLoadingElement())
+    this.#loadingElement = this.#createLoadingElement()
+    this.#setVariable()
+    this.addElement(this.#loadingElement)
     this.finish()
+  }
+
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--color', this.#supportChangeObject.color)
+  }
+
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<WaveLoadingSupportChangeOption>) {
+    if (option) {
+      super.setOption(<Partial<LoadingSupportChangeOption>>option)
+      Object.assign(this.#supportChangeObject, option)
+    }
   }
 
   #createStyle() {
@@ -34,7 +65,7 @@ export default class WaveLoading extends Loading {
 
 .${this.id}:before, .${this.id}:after {
   content: '';
-  border: 2px solid ${this.#color};
+  border: 2px solid var(--color);
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -117,7 +148,9 @@ export default class WaveLoading extends Loading {
   }
 
   #createLoadingElement() {
-    return `<div class="${this.id}"></div>`
+    const loadingElement = document.createElement('div');
+    loadingElement.classList.add(this.id)
+    return loadingElement
   }
 
 }

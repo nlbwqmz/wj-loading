@@ -1,4 +1,3 @@
-import SquareLoading from "./module/square";
 import BounceLoading from "./module/bounce";
 import TripleSpinnerLoading from "./module/triple-spinner";
 import CmSpinnerLoading from "./module/cm-spinner";
@@ -14,7 +13,6 @@ import WaveValueLoading from "./module/wave_value";
 import TextFillLoading from "./module/text_fill";
 
 const Loading = {
-  SquareLoading,
   CmSpinnerLoading,
   TripleSpinnerLoading,
   MeshLoaderLoading,
