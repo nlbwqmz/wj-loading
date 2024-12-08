@@ -30,7 +30,6 @@ export default class DotExpandLoading extends Loading {
         return true
       }
     })
-    this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()

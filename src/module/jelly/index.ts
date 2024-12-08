@@ -34,7 +34,6 @@ export default class JellyLoading extends Loading {
           }
         }
     )
-    this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
@@ -59,18 +58,17 @@ export default class JellyLoading extends Loading {
     const style = document.createElement('style')
     style.innerHTML = `
 .${this.id} {
-  position: absolute;
-  top: calc(50% - 20px);
-  left: calc(50% - 20px);
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .${this.id}-box {
   width: 50px;
   height: 50px;
   background: var(--color);
   animation: ${this.id}-animate .5s linear infinite;
-  position: absolute;
-  top: 0;
-  left: 0;
   border-radius: 3px;
 }
 @keyframes ${this.id}-animate {
@@ -88,9 +86,6 @@ export default class JellyLoading extends Loading {
   height: 5px;
   background: var(--shadow-color);
   opacity: var(--shadow-opacity);
-  position: absolute;
-  top: 59px;
-  left: 0;
   border-radius: 50%;
   animation: ${this.id}-shadow .5s linear infinite;
 }
@@ -107,8 +102,8 @@ export default class JellyLoading extends Loading {
     const loadingElement = document.createElement('div');
     loadingElement.classList.add(this.id)
     loadingElement.innerHTML = `
-      <div class="${this.id}-shadow"></div>
       <div class="${this.id}-box"></div>
+      <div class="${this.id}-shadow"></div>
     `
     return loadingElement
   }

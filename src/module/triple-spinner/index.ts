@@ -39,7 +39,6 @@ export default class TripleSpinnerLoading extends Loading {
           }
         }
     )
-    this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()

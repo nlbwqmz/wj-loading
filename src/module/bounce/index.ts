@@ -29,7 +29,6 @@ export default class BounceLoading extends Loading {
         return true
       }
     })
-    this.setContainerFlexCenter()
     this.#loadingElement = this.#createLoadingElement();
     this.#setVariable()
     this.addElement(this.#loadingElement)

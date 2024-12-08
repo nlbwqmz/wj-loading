@@ -36,7 +36,6 @@ export default class TextLoading extends Loading {
       }
     })
     this.#text = this.getOrDefault(option.text, 'Loading...')
-    this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()

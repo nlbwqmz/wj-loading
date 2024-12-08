@@ -1,3 +1,5 @@
+import {b} from "vite/dist/node/types.d-aGj9QkWt";
+
 export interface LoadingSupportChangeOption {
   // 移除后执行
   afterRemove: () => void
@@ -8,6 +10,10 @@ export interface LoadingSupportChangeOption {
   interval: number
   // 延迟remove
   delayRemove: number
+  // 底部文字
+  tipText: string
+  // 底部文字class
+  tipTextClass: string
 }
 
 export interface LoadingOption extends Partial<LoadingSupportChangeOption> {
@@ -39,8 +45,10 @@ export default class Loading {
   protected readonly immediate?: boolean
   protected readonly style: HTMLStyleElement
   #childrenStyle?: HTMLStyleElement
-  #containerFlexCenter?: boolean
   protected readonly container: HTMLDivElement
+  protected readonly animationContainer: HTMLDivElement
+  protected readonly textContainer: HTMLDivElement
+  #supportText: boolean = true
   // 渲染成功后执行
   protected afterRendered?: () => void
   // 元素宽或高改变后触发
@@ -58,6 +66,8 @@ export default class Loading {
       zIndex: this.getOrDefault(option.zIndex, '2000'),
       interval: this.getOrDefault(option.interval, 0),
       delayRemove: this.getOrDefault(option.delayRemove, 0),
+      tipText: this.getOrDefault(option.tipText, ''),
+      tipTextClass: this.getOrDefault(option.tipTextClass, '')
     }, {
       set: (target: LoadingSupportChangeOption, key: keyof LoadingSupportChangeOption, value) => {
         if (value !== undefined && value !== null) {
@@ -67,6 +77,15 @@ export default class Loading {
           if (styleList.includes(key)) {
             this.container.style.setProperty(this.convertToCssVariableName(key), value)
           }
+          if(this.#supportText){
+            if(key === 'tipText') {
+              this.textContainer.innerHTML = value
+            } else if(key === 'tipTextClass') {
+              this.textContainer.setAttribute('class', `${this.id}-text-container`)
+              this.textContainer.classList.add(value)
+            }
+          }
+
         }
         return true
       }
@@ -77,6 +96,8 @@ export default class Loading {
     this.immediate = option.immediate
     this.style = document.createElement('style')
     this.container = document.createElement('div')
+    this.animationContainer = document.createElement('div')
+    this.textContainer = document.createElement('div')
   }
 
   protected getOrDefault(value: any, defaultValue: any) {
@@ -101,6 +122,10 @@ export default class Loading {
     return '--' + name.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
   }
 
+  setSupportText(flag: boolean) {
+    this.#supportText = flag
+  }
+
   setOption(option: Partial<LoadingSupportChangeOption>) {
     if (option) {
       Object.assign(this.#supportChangeObject, option)
@@ -116,6 +141,11 @@ export default class Loading {
         overflow: hidden !important;
       }
       .${this.id}-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-direction: column;
         user-select: none !important;
         z-index: var(--z-index);
         background: var(--background);
@@ -130,16 +160,19 @@ export default class Loading {
         transition: opacity 0.2s linear;
         opacity: 0
       }
-    `
-    if (this.#containerFlexCenter === true) {
-      styleInnerHTML += `
-      .${this.id}-container {
+      
+      .${this.id}-animation-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .${this.id}-text-container {
         display: flex;
         justify-content: center;
         align-items: center;
       }
     `
-    }
     return styleInnerHTML
   }
 
@@ -171,15 +204,22 @@ export default class Loading {
     this.#observer.observe(this.element)
   }
 
-  protected setContainerFlexCenter(flag: boolean = true) {
-    this.#containerFlexCenter = flag
-  }
-
   /**
    * 初始化容器元素
    */
   #initContainerElement() {
     this.container.classList.add(`${this.id}-container`)
+    this.animationContainer.classList.add(`${this.id}-animation-container`)
+    this.container.append(this.animationContainer)
+    if(this.#supportText){
+      if(this.#supportChangeObject.tipText){
+        this.textContainer.innerHTML = this.#supportChangeObject.tipText
+      }
+      if(this.#supportChangeObject.tipTextClass){
+        this.textContainer.classList.add(`${this.id}-text-container`, this.#supportChangeObject.tipTextClass)
+      }
+      this.container.append(this.textContainer)
+    }
   }
 
   /**
@@ -216,7 +256,7 @@ export default class Loading {
    * 添加节点
    */
   protected addElement(dom: Element) {
-    this.container.appendChild(dom)
+    this.animationContainer.appendChild(dom)
   }
 
   protected finish() {

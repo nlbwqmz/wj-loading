@@ -34,7 +34,6 @@ export default class CubesLoading extends Loading {
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
-    this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
     this.finish()
   }

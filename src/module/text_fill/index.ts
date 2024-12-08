@@ -47,7 +47,6 @@ export default class TextFillLoading extends Loading {
           }
         }
     )
-    this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.addElement(this.#loadingElement)

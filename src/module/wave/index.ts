@@ -30,11 +30,11 @@ export default class WaveLoading extends Loading {
         return true
       }
     })
-    this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
+    this.setSupportText(false)
     this.finish()
   }
 

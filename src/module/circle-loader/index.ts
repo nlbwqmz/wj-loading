@@ -29,7 +29,6 @@ export default class CircleLoaderLoading extends Loading {
         return true
       }
     })
-    this.setContainerFlexCenter()
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
@@ -53,8 +52,8 @@ export default class CircleLoaderLoading extends Loading {
     style.innerHTML = `
           .${this.id} {
             position: relative;
-            width: auto;
-            height: auto;
+            width: 60px;
+            height: 60px;
           }
           
           .${this.id} div {
@@ -68,48 +67,48 @@ export default class CircleLoaderLoading extends Loading {
           }
           
           .${this.id} > div:nth-child(1) {
-            top: -25px;
-            left: 0;
+            top: 0px;
+            left: 25px;
           }
           .${this.id} > div:nth-child(2) {
-            top: -17px;
-            left: 17px;
+            top: 8px;
+            left: 43px;
             -webkit-animation-delay: 0.1s;
             animation-delay: 0.1s;
           }
           .${this.id} > div:nth-child(3) {
-            top: 0;
-            left: 25px;
+            top: 25px;
+            left: 50px;
             -webkit-animation-delay: 0.2s;
             animation-delay: 0.2s;
           }
           .${this.id} > div:nth-child(4) {
-            top: 17px;
-            left: 17px;
+            top: 43px;
+            left: 43px;
             -webkit-animation-delay: 0.3s;
             animation-delay: 0.3s;
           }
           .${this.id} > div:nth-child(5) {
-            top: 25px;
-            left: 0;
+            top: 50px;
+            left: 25px;
             -webkit-animation-delay: 0.4s;
             animation-delay: 0.4s;
           }
           .${this.id} > div:nth-child(6) {
-            top: 17px;
-            left: -17px;
+            top: 43px;
+            left: 8px;
             -webkit-animation-delay: 0.5s;
             animation-delay: 0.5s;
           }
           .${this.id} > div:nth-child(7) {
-            top: 0;
-            left: -25px;
+            top: 25px;
+            left: 0px;
             -webkit-animation-delay: 0.6s;
             animation-delay: 0.6s;
           }
           .${this.id} > div:nth-child(8) {
-            top: -17px;
-            left: -17px;
+            top: 8px;
+            left: 8px;
             -webkit-animation-delay: 0.7s;
             animation-delay: 0.7s;
           }

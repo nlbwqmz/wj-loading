@@ -57,7 +57,6 @@ export default class WaveValueLoading extends Loading {
           }
         }
     )
-    this.setContainerFlexCenter()
     this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
@@ -116,6 +115,7 @@ export default class WaveValueLoading extends Loading {
   border: var(--border-size) solid var(--color);
   border-radius: 50%;
   overflow: hidden;
+  position: relative;
 }
 
 .${this.id}-wave {
