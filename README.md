@@ -7,7 +7,11 @@
 **开箱即用的loading组件~~~**
 
 - [演示](https://nlbwqmz.github.io/wj-loading-pages/)
-- [GITHUB](https://github.com/nlbwqmz/wj-loading)
+- [github](https://github.com/nlbwqmz/wj-loading)
+
+## vue指令版本兼容vue2和vue3
+
+- [wj-loading-vue](https://github.com/nlbwqmz/wj-loading-vue)
 
 ## 安装
 
