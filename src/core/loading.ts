@@ -5,6 +5,7 @@ export interface LoadingSupportChangeOption {
   afterRemove: () => void
   // 背景
   background: string
+  gaussianBlur: boolean | string
   zIndex: string
   // 执行时时间（毫秒）
   interval: number
@@ -67,7 +68,8 @@ export default class Loading {
       interval: this.getOrDefault(option.interval, 0),
       delayRemove: this.getOrDefault(option.delayRemove, 0),
       tipText: this.getOrDefault(option.tipText, ''),
-      tipTextClass: this.getOrDefault(option.tipTextClass, '')
+      tipTextClass: this.getOrDefault(option.tipTextClass, ''),
+      gaussianBlur: this.getOrDefault(option.gaussianBlur, false),
     }, {
       set: (target: LoadingSupportChangeOption, key: keyof LoadingSupportChangeOption, value) => {
         if (value !== undefined && value !== null) {
@@ -76,6 +78,15 @@ export default class Loading {
           const styleList: (keyof LoadingSupportChangeOption)[] = ['background', 'zIndex']
           if (styleList.includes(key)) {
             this.container.style.setProperty(this.convertToCssVariableName(key), value)
+          }
+          if(key === 'gaussianBlur' && value) {
+            if(typeof value === 'boolean'){
+              this.container.style.setProperty('--backdrop-filter', '5px')
+            } else if(typeof value === 'string'){
+              this.container.style.setProperty('--backdrop-filter', value)
+            }
+          } else {
+            this.container.style.setProperty('--backdrop-filter', '0px')
           }
           if(this.#supportText){
             if(key === 'tipText') {
@@ -115,6 +126,16 @@ export default class Loading {
     this.container.style.setProperty('--top', this.element.scrollTop + 'px')
     this.container.style.setProperty('--width', width + 'px')
     this.container.style.setProperty('--height', height + 'px')
+
+    if(this.#supportChangeObject.gaussianBlur){
+      if(typeof this.#supportChangeObject.gaussianBlur === 'boolean'){
+        this.container.style.setProperty('--backdrop-filter', '5px')
+      } else {
+        this.container.style.setProperty('--backdrop-filter', this.#supportChangeObject.gaussianBlur)
+      }
+    } else {
+      this.container.style.setProperty('--backdrop-filter', '0px')
+    }
   }
 
   // 将参数名转为css变量名
@@ -155,6 +176,7 @@ export default class Loading {
         left: var(--left);
         top: var(--top);
         transition: background 0.2s linear;
+        backdrop-filter: blur(var(--backdrop-filter));
       }
       .${this.id}-smooth-remove {
         transition: opacity 0.2s linear;

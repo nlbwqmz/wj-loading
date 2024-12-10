@@ -34,14 +34,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   </div>
 `
 
-function getRandomRGBAColor() {
-  const r = Math.floor(Math.random() * 256); // 0 - 255
-  const g = Math.floor(Math.random() * 256); // 0 - 255
-  const b = Math.floor(Math.random() * 256); // 0 - 255
-  const a = (Math.random()).toFixed(2); // 透明度值范围 0-1，保留两位小数
-  return `rgba(${r}, ${g}, ${b}, ${a})`;
-}
-
 keys.forEach(item => {
   if (item !== 'WaveValueLoading') {
     // @ts-ignore

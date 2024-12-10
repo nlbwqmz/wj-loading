@@ -53,6 +53,7 @@ new Loading.TextLoading({
 |  immediate   |       false        | 否  |      否      |         boolean         |                    立即执行                    |
 |   interval   |         -          | 否  |      是      |         number          |                  执行时间（毫秒）                  |
 |  background  | rgba(0, 0, 0, 0.2) | 否  |      是      |         string          |                     背景                     |
+| gaussianBlur |       false        | 否  |      是      |     number / string     |                    高斯模糊                    |
 |    zIndex    |        2000        | 否  |      是      |         number          |                  z-index                   |
 | afterRemove  |         -          | 否  |      是      |       () => void        |                   移除后回调                    |
 | delayRemove  |         -          | 否  |      是      |         number          |                  延迟移除（毫秒）                  |
