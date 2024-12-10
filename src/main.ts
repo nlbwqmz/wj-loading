@@ -27,7 +27,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <div class="bg">npm install wj-loading</div>
     <div class="bg">&lt;script src="https://cdn.jsdelivr.net/npm/wj-loading@:version/dist/wj-loading.umd.min.js"&gt;&lt;/script&gt;</div>
     <div class="bg">&lt;script src="https://unpkg.com/wj-loading@:version/wj-loading.umd.js"&gt;&lt;/script&gt;</div>
-    <div data-url="https://github.com/nlbwqmz/wj-loading" class="url">github</div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px">
+      <div data-url="https://github.com/nlbwqmz/wj-loading" class="url">github</div>
+      <div data-url="https://github.com/nlbwqmz/wj-loading-vue" class="url">vue指令版</div>
+    </div>
   </div>
   <div class="grid-container">
     ${createCard()}
