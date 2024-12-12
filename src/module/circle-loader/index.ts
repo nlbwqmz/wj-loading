@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface CircleLoaderLoadingOption extends LoadingOption, Partial<CircleLoaderLoadingSupportChangeOption> {
 }
@@ -7,7 +7,9 @@ export interface CircleLoaderLoadingSupportChangeOption {
   color: string;
 }
 
-export default class CircleLoaderLoading extends Loading {
+export type CircleLoaderLoadingType = CircleLoaderLoading
+
+export default class CircleLoaderLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: CircleLoaderLoadingSupportChangeOption

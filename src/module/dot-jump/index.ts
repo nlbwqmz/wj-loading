@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 import {FixedLengthArray} from "../../core/types";
 
 export interface DotJumpOption extends LoadingOption, Partial<DotJumpSupportChangeOption> {
@@ -8,8 +8,10 @@ export interface DotJumpSupportChangeOption {
   color: FixedLengthArray<string, 2>
 }
 
+export declare type DotJumpLoadingType = DotJumpLoading;
 
-export default class DotJumpLoading extends Loading {
+
+export default class DotJumpLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: DotJumpSupportChangeOption

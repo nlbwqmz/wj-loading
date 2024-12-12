@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface WaveValueLoadingOption extends LoadingOption, Partial<WaveValueLoadingSupportChangeOption> {
 }
@@ -14,8 +14,9 @@ export interface WaveValueLoadingSupportChangeOption {
   fontWeight: string;
 }
 
+export declare type WaveValueLoadingType = WaveValueLoading;
 
-export default class WaveValueLoading extends Loading {
+export default class WaveValueLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: WaveValueLoadingSupportChangeOption

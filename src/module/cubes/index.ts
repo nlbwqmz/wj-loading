@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface CubesLoadingOption extends LoadingOption, Partial<CubesLoadingSupportChangeOption> {
 }
@@ -8,8 +8,9 @@ export interface CubesLoadingSupportChangeOption {
   size: string;
 }
 
+export declare type CubesLoadingType = CubesLoading;
 
-export default class CubesLoading extends Loading {
+export default class CubesLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: CubesLoadingSupportChangeOption

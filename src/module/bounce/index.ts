@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface BounceLoadingOption extends LoadingOption, Partial<BounceLoadingSupportChangeOption> {
 }
@@ -8,8 +8,9 @@ export interface BounceLoadingSupportChangeOption {
   size: string;
 }
 
+export type BounceLoadingType = BounceLoading
 
-export default class BounceLoading extends Loading {
+export default class BounceLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: BounceLoadingSupportChangeOption

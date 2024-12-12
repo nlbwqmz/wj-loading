@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 import {FixedLengthArray} from "../../core/types";
 
 export interface CmSpinnerLoadingOption extends LoadingOption, Partial<CmSpinnerLoadingSupportChangeOption> {
@@ -9,7 +9,9 @@ export interface CmSpinnerLoadingSupportChangeOption {
   size: string;
 }
 
-export default class CmSpinnerLoading extends Loading {
+export declare type CmSpinnerLoadingType = CmSpinnerLoading;
+
+export default class CmSpinnerLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: CmSpinnerLoadingSupportChangeOption

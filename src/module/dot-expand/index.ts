@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface DotExpandLoadingOption extends LoadingOption, Partial<DotExpandLoadingSupportChangeOption> {
 }
@@ -7,8 +7,9 @@ export interface DotExpandLoadingSupportChangeOption {
   color: string;
 }
 
+export declare type DotExpandLoadingType = DotExpandLoading;
 
-export default class DotExpandLoading extends Loading {
+export default class DotExpandLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: DotExpandLoadingSupportChangeOption

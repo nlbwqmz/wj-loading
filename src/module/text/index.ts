@@ -1,5 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
-import {MeshLoaderLoadingSupportChangeOption} from "../mesh-loader";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface TextLoadingOption extends LoadingOption, Partial<TextLoadingSupportChangeOption> {
   text?: string;
@@ -10,8 +9,9 @@ export interface TextLoadingSupportChangeOption {
   size: string;
 }
 
+export declare type TextLoadingType = TextLoading;
 
-export default class TextLoading extends Loading {
+export default class TextLoading extends LoadingTop {
 
   readonly #text: string
   readonly #loadingElement: HTMLDivElement
@@ -48,7 +48,7 @@ export default class TextLoading extends Loading {
     this.#loadingElement.style.setProperty('--size', this.#supportChangeObject.size)
   }
 
-  setOption(option: Partial<LoadingSupportChangeOption> | Partial<MeshLoaderLoadingSupportChangeOption>) {
+  setOption(option: Partial<LoadingSupportChangeOption> | Partial<TextLoadingSupportChangeOption>) {
     if (option) {
       super.setOption(<Partial<LoadingSupportChangeOption>>option)
       Object.assign(this.#supportChangeObject, option)

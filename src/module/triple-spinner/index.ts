@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 import {FixedLengthArray} from "../../core/types";
 
 export interface TripleSpinnerLoadingOption extends LoadingOption, Partial<TripleSpinnerLoadingSupportChangeOption> {
@@ -9,7 +9,9 @@ export interface TripleSpinnerLoadingSupportChangeOption {
   size: string;
 }
 
-export default class TripleSpinnerLoading extends Loading {
+export declare type TripleSpinnerLoadingType = TripleSpinnerLoading;
+
+export default class TripleSpinnerLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: TripleSpinnerLoadingSupportChangeOption

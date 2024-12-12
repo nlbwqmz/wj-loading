@@ -1,5 +1,3 @@
-import {b} from "vite/dist/node/types.d-aGj9QkWt";
-
 export interface LoadingSupportChangeOption {
   // 移除后执行
   afterRemove: () => void
@@ -37,7 +35,9 @@ const generateId = (length: number = 8) => {
   return randomString;
 }
 
-export default class Loading {
+export type LoadingTopType = LoadingTop
+
+export default class LoadingTop {
   protected readonly id: string
   // 已渲染
   protected rendered: boolean

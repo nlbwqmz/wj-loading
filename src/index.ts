@@ -12,6 +12,23 @@ import DotExpandLoading from "./module/dot-expand";
 import WaveValueLoading from "./module/wave_value";
 import TextFillLoading from "./module/text_fill";
 
+export type * from "./module/bounce";
+export type * from "./module/triple-spinner";
+export type * from "./module/cm-spinner";
+export type * from "./module/mesh-loader";
+export type * from "./module/circle-loader";
+export type * from "./module/cubes";
+export type * from "./module/text";
+export type * from "./module/dot-jump";
+export type * from "./module/jelly";
+export type * from "./module/wave";
+export type * from "./module/dot-expand";
+export type * from "./module/wave_value";
+export type * from "./module/text_fill";
+export type * from "./core/loadingTop";
+
+export type * from "./core/types";
+
 const Loading = {
   CmSpinnerLoading,
   TripleSpinnerLoading,

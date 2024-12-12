@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface JellyLoadingOption extends LoadingOption, Partial<JellyLoadingSupportChangeOption> {
 }
@@ -9,8 +9,9 @@ export interface JellyLoadingSupportChangeOption {
   shadowOpacity: string
 }
 
+export declare type JellyLoadingType = JellyLoading;
 
-export default class JellyLoading extends Loading {
+export default class JellyLoading extends LoadingTop {
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: JellyLoadingSupportChangeOption
 

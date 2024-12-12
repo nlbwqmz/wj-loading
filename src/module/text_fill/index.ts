@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface TextFillLoadingOption extends LoadingOption, Partial<TextFillLoadingSupportChangeOption> {
 }
@@ -11,8 +11,9 @@ export interface TextFillLoadingSupportChangeOption {
   direction: 'horizontal' | 'vertical';
 }
 
+export declare type TextFillLoadingType = TextFillLoading;
 
-export default class TextFillLoading extends Loading {
+export default class TextFillLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement
   readonly #supportChangeObject: TextFillLoadingSupportChangeOption

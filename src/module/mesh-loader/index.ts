@@ -1,4 +1,4 @@
-import Loading, {LoadingOption, LoadingSupportChangeOption} from "../../core/loading";
+import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface MeshLoaderLoadingOption extends LoadingOption, Partial<MeshLoaderLoadingSupportChangeOption> {
 }
@@ -7,7 +7,9 @@ export interface MeshLoaderLoadingSupportChangeOption {
   color: string;
 }
 
-export default class MeshLoaderLoading extends Loading {
+export declare type MeshLoaderLoadingType = MeshLoaderLoading;
+
+export default class MeshLoaderLoading extends LoadingTop {
 
   readonly #loadingElement: HTMLDivElement;
   readonly #supportChangeObject: MeshLoaderLoadingSupportChangeOption;
