@@ -81,4 +81,8 @@ export default class DotExpandLoading extends LoadingTop {
     return loadingElement
   }
 
+  get [Symbol.toStringTag](){
+    return 'DotExpandLoading'
+  }
+
 }

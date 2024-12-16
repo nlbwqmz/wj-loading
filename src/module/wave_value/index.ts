@@ -192,4 +192,8 @@ export default class WaveValueLoading extends LoadingTop {
   setValue(value: number) {
     this.#supportChangeObject.value = value
   }
+
+  get [Symbol.toStringTag](){
+    return 'WaveValueLoading'
+  }
 }

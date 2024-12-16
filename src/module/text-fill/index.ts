@@ -130,4 +130,8 @@ ${convertResult.keyframes}
     return divElement
   }
 
+  get [Symbol.toStringTag](){
+    return 'TextFillLoading'
+  }
+
 }

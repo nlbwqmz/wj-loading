@@ -155,4 +155,7 @@ export default class WaveLoading extends LoadingTop {
     return loadingElement
   }
 
+  get [Symbol.toStringTag](){
+    return 'WaveLoading'
+  }
 }

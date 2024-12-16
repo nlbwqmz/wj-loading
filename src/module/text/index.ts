@@ -104,4 +104,8 @@ export default class TextLoading extends LoadingTop {
     return divElement
   }
 
+  get [Symbol.toStringTag](){
+    return 'TextLoading'
+  }
+
 }

@@ -371,4 +371,7 @@ export default class LoadingTop {
       }
     })
   }
+  get [Symbol.toStringTag](){
+    return 'Loading'
+  }
 }

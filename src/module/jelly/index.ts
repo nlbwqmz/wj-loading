@@ -109,4 +109,8 @@ export default class JellyLoading extends LoadingTop {
     return loadingElement
   }
 
+  get [Symbol.toStringTag](){
+    return 'JellyLoading'
+  }
+
 }

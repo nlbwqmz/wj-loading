@@ -146,4 +146,8 @@ export default class TripleSpinnerLoading extends LoadingTop {
     return loadingElement
   }
 
+  get [Symbol.toStringTag](){
+    return 'TripleSpinnerLoading'
+  }
+
 }

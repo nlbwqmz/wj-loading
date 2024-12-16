@@ -138,5 +138,7 @@ export default class CircleLoaderLoading extends LoadingTop {
     loadingElement.innerHTML = '<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>'
     return loadingElement
   }
-
+  get [Symbol.toStringTag](){
+    return 'CircleLoaderLoading'
+  }
 }

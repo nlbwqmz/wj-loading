@@ -122,4 +122,8 @@ export default class CubesLoading extends LoadingTop {
     return loadingElement
   }
 
+  get [Symbol.toStringTag](){
+    return 'CubesLoading'
+  }
+
 }

@@ -179,5 +179,7 @@ export default class CmSpinnerLoading extends LoadingTop {
     loadingElement.classList.add(this.id)
     return loadingElement
   }
-
+  get [Symbol.toStringTag](){
+    return 'CmSpinnerLoading'
+  }
 }

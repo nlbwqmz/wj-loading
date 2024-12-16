@@ -159,4 +159,8 @@ export default class MeshLoaderLoading extends LoadingTop {
     return loadingElement
   }
 
+  get [Symbol.toStringTag](){
+    return 'MeshLoaderLoading'
+  }
+
 }

@@ -89,4 +89,7 @@ export default class BounceLoading extends LoadingTop {
     loadingElement.innerHTML = `<div class="${this.id}-bounce1"></div><div class="${this.id}-bounce2"></div><div class="${this.id}-bounce3"></div>`
     return loadingElement
   }
+  get [Symbol.toStringTag](){
+    return 'BounceLoading'
+  }
 }
