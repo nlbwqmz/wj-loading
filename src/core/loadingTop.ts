@@ -154,7 +154,7 @@ export default class LoadingTop {
   }
 
   #createStyleInnerHTML = () => {
-    let styleInnerHTML = `
+    return `
       .${this.id}-relative {
         position: relative;
       }
@@ -195,7 +195,6 @@ export default class LoadingTop {
         align-items: center;
       }
     `
-    return styleInnerHTML
   }
 
   /**
@@ -316,7 +315,7 @@ export default class LoadingTop {
     }
     if (targetInterval > 0) {
       setTimeout(() => {
-        this.remove()
+        this.remove().then(() => {})
       }, targetInterval)
     }
     this.afterRendered && this.afterRendered()
@@ -326,7 +325,7 @@ export default class LoadingTop {
    * 移除
    */
   remove(delayRemove?: number) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       if (!this.rendered) {
         resolve()
         return

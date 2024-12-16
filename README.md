@@ -62,11 +62,11 @@ new Loading.TextLoading({
 
 ### 公用方法
 
-|             方法名             |      必须       |                  参数                   | 描述 |
-|:---------------------------:|:-------------:|:-------------------------------------:|:--:|
-|  loading(interval: number)  |  interval:否   |          interval:执行时时间（毫秒）           | 执行 |
-| remove(delayRemove: number) | delayRemove:否 |         delayRemove:延迟移除（毫秒）          | 移除 |
-|      setOption(option)      |    设置参数:是     | option:请查看公用参数和动画对应的参数是否支持setOption方法 | 设置 |
+|                    方法名                    |      必须       |                  参数                   | 描述 |
+|:-----------------------------------------:|:-------------:|:-------------------------------------:|:--:|
+|         loading(interval: number)         |  interval:否   |          interval:执行时时间（毫秒）           | 执行 |
+|remove(delayRemove: number): Promise<void> | delayRemove:否 |         delayRemove:延迟移除（毫秒）          | 移除 |
+|             setOption(option)             |    设置参数:是     | option:请查看公用参数和动画对应的参数是否支持setOption方法 | 设置 |
 
 ## BounceLoading
 
