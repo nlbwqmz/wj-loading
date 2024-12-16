@@ -326,42 +326,50 @@ export default class LoadingTop {
    * 移除
    */
   remove(delayRemove?: number) {
-    if (!this.rendered) {
-      return
-    }
-    const r = () => {
-      this.#observer && this.#observer.disconnect()
-      // 平滑过渡 处理loading闪烁问题
-      if (this.container) {
-        this.container.classList.add(`${this.id}-smooth-remove`)
+    return new Promise((resolve, reject) => {
+      if (!this.rendered) {
+        resolve()
+        return
       }
-      setTimeout(() => {
+      const r = () => {
+        this.#observer && this.#observer.disconnect()
+        // 平滑过渡 处理loading闪烁问题
         if (this.container) {
-          this.container.remove()
-          this.container.classList.remove(`${this.id}-smooth-remove`)
+          this.container.classList.add(`${this.id}-smooth-remove`)
         }
-        this.style && this.style.remove()
-        this.#childrenStyle && this.#childrenStyle.remove()
-        if (this.element.classList.contains(`${this.id}-relative`)) {
-          this.element.classList.remove(`${this.id}-relative`)
-        }
-        this.element.classList.remove(`${this.id}-lock`)
-        this.rendered = false
-        this.#supportChangeObject.afterRemove && this.#supportChangeObject.afterRemove()
-      }, 200)
-    }
-    let delay
-    if (delayRemove === undefined || delayRemove === null) {
-      delay = this.#supportChangeObject.delayRemove || 0
-    } else {
-      delay = delayRemove
-    }
-    if (delay > 0) {
-      setTimeout(() => {
+        setTimeout(() => {
+          try {
+            if (this.container) {
+              this.container.remove()
+              this.container.classList.remove(`${this.id}-smooth-remove`)
+            }
+            this.style && this.style.remove()
+            this.#childrenStyle && this.#childrenStyle.remove()
+            if (this.element.classList.contains(`${this.id}-relative`)) {
+              this.element.classList.remove(`${this.id}-relative`)
+            }
+            this.element.classList.remove(`${this.id}-lock`)
+            this.rendered = false
+            this.#supportChangeObject.afterRemove && this.#supportChangeObject.afterRemove()
+            resolve()
+          } catch (e) {
+            reject(e)
+          }
+        }, 200)
+      }
+      let delay
+      if (delayRemove === undefined || delayRemove === null) {
+        delay = this.#supportChangeObject.delayRemove || 0
+      } else {
+        delay = delayRemove
+      }
+      if (delay > 0) {
+        setTimeout(() => {
+          r()
+        }, delay)
+      } else {
         r()
-      }, delay)
-    } else {
-      r()
-    }
+      }
+    })
   }
 }
