@@ -1,0 +1,48 @@
+.wj-loading-container {
+  --z-index: 2000;
+  --background: rgba(0, 0, 0, 0.2);
+  --width: 0px;
+  --height: 0px;
+  --left: 0px;
+  --top: 0px;
+  --backdrop-filter: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column;
+  user-select: none !important;
+  z-index: var(--z-index);
+  background: var(--background);
+  position: absolute;
+  width: var(--width);
+  height: var(--height);
+  left: var(--left);
+  top: var(--top);
+  transition: background 0.2s linear;
+  backdrop-filter: blur(var(--backdrop-filter));
+}
+
+.wj-loading-relative {
+  position: relative;
+}
+.wj-loading-lock {
+  overflow: hidden !important;
+}
+
+.wj-loading-smooth-remove {
+  transition: opacity 0.2s linear;
+  opacity: 0
+}
+
+.wj-loading-animation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wj-loading-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

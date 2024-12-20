@@ -1,4 +1,5 @@
 import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
+import './index.css'
 
 export interface JellyLoadingOption extends LoadingOption, Partial<JellyLoadingSupportChangeOption> {
 }
@@ -35,7 +36,6 @@ export default class JellyLoading extends LoadingTop {
           }
         }
     )
-    this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
@@ -55,56 +55,12 @@ export default class JellyLoading extends LoadingTop {
     }
   }
 
-  #createStyle() {
-    const style = document.createElement('style')
-    style.innerHTML = `
-.${this.id} {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.${this.id}-box {
-  width: 50px;
-  height: 50px;
-  background: var(--color);
-  animation: ${this.id}-animate .5s linear infinite;
-  border-radius: 3px;
-}
-@keyframes ${this.id}-animate {
-  17% { border-bottom-right-radius: 3px; }
-  25% { transform: translateY(9px) rotate(22.5deg); }
-  50% {
-    transform: translateY(18px) scale(1,.9) rotate(45deg) ;
-    border-bottom-right-radius: 40px;
-  }
-  75% { transform: translateY(9px) rotate(67.5deg); }
-  100% { transform: translateY(0) rotate(90deg); }
-} 
-.${this.id}-shadow { 
-  width: 50px;
-  height: 5px;
-  background: var(--shadow-color);
-  opacity: var(--shadow-opacity);
-  border-radius: 50%;
-  animation: ${this.id}-shadow .5s linear infinite;
-}
-@keyframes ${this.id}-shadow {
-  50% {
-    transform: scale(1.2,1);
-  }
-}
-        `
-    return style
-  }
-
   #createLoadingElement() {
     const loadingElement = document.createElement('div');
-    loadingElement.classList.add(this.id)
+    loadingElement.classList.add('wj-loading-animation-jelly')
     loadingElement.innerHTML = `
-      <div class="${this.id}-box"></div>
-      <div class="${this.id}-shadow"></div>
+      <div class="wj-loading-animation-jelly-box"></div>
+      <div class="wj-loading-animation-jelly-shadow"></div>
     `
     return loadingElement
   }

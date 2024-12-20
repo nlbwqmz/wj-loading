@@ -1,3 +1,4 @@
+import './loadingTop.css'
 export interface LoadingSupportChangeOption {
   // 移除后执行
   afterRemove: () => void
@@ -44,8 +45,6 @@ export default class LoadingTop {
   protected readonly element: Element
   // 立即执行
   protected readonly immediate?: boolean
-  protected readonly style: HTMLStyleElement
-  #childrenStyle?: HTMLStyleElement
   protected readonly container: HTMLDivElement
   protected readonly animationContainer: HTMLDivElement
   protected readonly textContainer: HTMLDivElement
@@ -92,7 +91,7 @@ export default class LoadingTop {
             if(key === 'tipText') {
               this.textContainer.innerHTML = value
             } else if(key === 'tipTextClass') {
-              this.textContainer.setAttribute('class', `${this.id}-text-container`)
+              this.textContainer.setAttribute('class', `wj-loading-text-container`)
               this.textContainer.classList.add(value)
             }
           }
@@ -105,7 +104,6 @@ export default class LoadingTop {
     this.rendered = false
     this.element = this.#selectElement(option.element)
     this.immediate = option.immediate
-    this.style = document.createElement('style')
     this.container = document.createElement('div')
     this.animationContainer = document.createElement('div')
     this.textContainer = document.createElement('div')
@@ -153,50 +151,6 @@ export default class LoadingTop {
     }
   }
 
-  #createStyleInnerHTML = () => {
-    return `
-      .${this.id}-relative {
-        position: relative;
-      }
-      .${this.id}-lock {
-        overflow: hidden !important;
-      }
-      .${this.id}-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        flex-direction: column;
-        user-select: none !important;
-        z-index: var(--z-index);
-        background: var(--background);
-        position: absolute;
-        width: var(--width);
-        height: var(--height);
-        left: var(--left);
-        top: var(--top);
-        transition: background 0.2s linear;
-        backdrop-filter: blur(var(--backdrop-filter));
-      }
-      .${this.id}-smooth-remove {
-        transition: opacity 0.2s linear;
-        opacity: 0
-      }
-      
-      .${this.id}-animation-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      
-      .${this.id}-text-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    `
-  }
-
   /**
    * 初始化容器样式
    */
@@ -207,7 +161,6 @@ export default class LoadingTop {
     this.#currentOffsetWidth = width
     this.#currentOffsetHeight = height
     this.#setVariable(width, height)
-    this.style.innerHTML = this.#createStyleInnerHTML()
   }
 
   #listen() {
@@ -229,15 +182,15 @@ export default class LoadingTop {
    * 初始化容器元素
    */
   #initContainerElement() {
-    this.container.classList.add(`${this.id}-container`)
-    this.animationContainer.classList.add(`${this.id}-animation-container`)
+    this.container.classList.add(`wj-loading-container`)
+    this.animationContainer.classList.add(`wj-loading-animation-container`)
     this.container.append(this.animationContainer)
     if(this.#supportText){
       if(this.#supportChangeObject.tipText){
         this.textContainer.innerHTML = this.#supportChangeObject.tipText
       }
       if(this.#supportChangeObject.tipTextClass){
-        this.textContainer.classList.add(`${this.id}-text-container`, this.#supportChangeObject.tipTextClass)
+        this.textContainer.classList.add(`wj-loading-text-container`, this.#supportChangeObject.tipTextClass)
       }
       this.container.append(this.textContainer)
     }
@@ -259,17 +212,6 @@ export default class LoadingTop {
       }
     } else {
       return document.body
-    }
-  }
-
-  /**
-   * 添加样式
-   */
-  protected setChildrenStyle(style: HTMLStyleElement) {
-    if (this.#childrenStyle) {
-      this.#childrenStyle.innerHTML = style.innerHTML
-    } else {
-      this.#childrenStyle = style
     }
   }
 
@@ -297,13 +239,9 @@ export default class LoadingTop {
     }
 
     if (!['relative', 'absolute', 'fixed'].includes(window.getComputedStyle(this.element).position)) {
-      this.element.classList.add(`${this.id}-relative`)
+      this.element.classList.add(`wj-loading-relative`)
     }
-    this.element.classList.add(`${this.id}-lock`)
-    document.getElementsByTagName('head')[0].appendChild(this.style)
-    if (this.#childrenStyle) {
-      document.getElementsByTagName('head')[0].appendChild(this.#childrenStyle)
-    }
+    this.element.classList.add(`wj-loading-lock`)
     this.element.appendChild(this.container)
     this.#listen()
     this.rendered = true
@@ -334,20 +272,18 @@ export default class LoadingTop {
         this.#observer && this.#observer.disconnect()
         // 平滑过渡 处理loading闪烁问题
         if (this.container) {
-          this.container.classList.add(`${this.id}-smooth-remove`)
+          this.container.classList.add(`wj-loading-smooth-remove`)
         }
         setTimeout(() => {
           try {
             if (this.container) {
               this.container.remove()
-              this.container.classList.remove(`${this.id}-smooth-remove`)
+              this.container.classList.remove(`wj-loading-smooth-remove`)
             }
-            this.style && this.style.remove()
-            this.#childrenStyle && this.#childrenStyle.remove()
-            if (this.element.classList.contains(`${this.id}-relative`)) {
-              this.element.classList.remove(`${this.id}-relative`)
+            if (this.element.classList.contains(`wj-loading-relative`)) {
+              this.element.classList.remove(`wj-loading-relative`)
             }
-            this.element.classList.remove(`${this.id}-lock`)
+            this.element.classList.remove(`wj-loading-lock`)
             this.rendered = false
             this.#supportChangeObject.afterRemove && this.#supportChangeObject.afterRemove()
             resolve()

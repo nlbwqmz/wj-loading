@@ -1,5 +1,6 @@
 import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 import {FixedLengthArray} from "../../core/types";
+import './index.css'
 
 export interface TripleSpinnerLoadingOption extends LoadingOption, Partial<TripleSpinnerLoadingSupportChangeOption> {
 }
@@ -41,7 +42,6 @@ export default class TripleSpinnerLoading extends LoadingTop {
           }
         }
     )
-    this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
@@ -62,87 +62,9 @@ export default class TripleSpinnerLoading extends LoadingTop {
     }
   }
 
-  #createStyle() {
-    const style = document.createElement('style')
-    style.innerHTML = `
-      .${this.id} {
-        display: block;
-        position: relative;
-        width: var(--size);
-        height: var(--size);
-        border-radius: 50%;
-        border: 4px solid transparent;
-        border-top: 4px solid var(--color-0);
-        -webkit-animation: ${this.id}-spin 2s linear infinite;
-        animation: ${this.id}-spin 2s linear infinite;
-      }
-      
-      .${this.id}::before,
-      .${this.id}::after {
-        content: "";
-        position: absolute;
-        border-radius: 50%;
-        border: 4px solid transparent;
-      }
-      .${this.id}::before {
-        top: 5px;
-        left: 5px;
-        right: 5px;
-        bottom: 5px;
-        border-top-color: var(--color-1);
-        -webkit-animation: ${this.id}-spin 3s linear infinite;
-        animation: ${this.id}-spin 3.5s linear infinite;
-      }
-      .${this.id}::after {
-        top: 15px;
-        left: 15px;
-        right: 15px;
-        bottom: 15px;
-        border-top-color: var(--color-2);
-        -webkit-animation: ${this.id}-spin 1.5s linear infinite;
-        animation: ${this.id}-spin 1.75s linear infinite;
-      }
-      -webkit-@keyframes ${this.id}-spin {
-        -webkit-from {
-          -webkit-transform: rotate(0deg);
-          -ms-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        -webkit-to {
-          -webkit-transform: rotate(360deg);
-          -ms-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-      
-      @-webkit-keyframes ${this.id}-spin {
-        from {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        to {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-      
-      @keyframes ${this.id}-spin {
-        from {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        to {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-        `
-    return style
-  }
-
   #createLoadingElement() {
     const loadingElement = document.createElement('div');
-    loadingElement.classList.add(this.id)
+    loadingElement.classList.add('wj-loading-animation-triple-spinner')
     return loadingElement
   }
 

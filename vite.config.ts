@@ -8,20 +8,14 @@ export default defineConfig(({mode}) => {
       minify: 'esbuild',
       lib: {
         entry: path.resolve(__dirname, 'src/index.ts'),
-        name: 'wj-loading',
+        name: 'Loading',
         fileName: (format) => `wj-loading.${format}.js`,
       },
       rollupOptions: {
         external: ["src/main.ts"], // 指定外部依赖，如果没有依赖可留空,
-        output: [
-          {
-            format: 'es'
-          },
-          {
-            format: 'umd', // 输出UMD格式，支持script引入全局变量
-            name: 'Loading', //全局变量名
-          },
-        ],
+        output: {
+          assetFileNames: 'wj-loading.css'
+        },
       },
     },
     esbuild: {

@@ -1,6 +1,6 @@
 # wj-loading
 
-<u>***当前为2.X文档。***</u>（[查看1.X文档](./readme/README_V1.md)）
+<u>***当前为1.X文档。***</u>（[查看2.X文档](../README.md)）
 
 ![NPM Version](https://img.shields.io/npm/v/wj-loading)
 ![NPM Downloads](https://img.shields.io/npm/dw/wj-loading)
@@ -36,8 +36,6 @@
 ### JS
 
 ```js
-// 引入样式
-import 'wj-loading/dist/wj-loading.css'
 import Loading from 'wj-loading'
 
 new Loading.TextLoading({
@@ -199,7 +197,6 @@ new Loading.TextLoading({
 
 |    参数名    |   默认值    | 必须 | 支持setOption |  数据类型  |            描述             |
 |:---------:|:--------:|:--:|:-----------:|:------:|:-------------------------:|
-|   text    | Loading  | 否  |      是      | string |            文字             |
 |   color   |   #FFF   | 否  |      是      | string |           文字颜色            |
 | fillColor | #76DAFF  | 否  |      是      | string |           填充颜色            |
 |   size    |   40px   | 否  |      是      | string |           文字大小            |

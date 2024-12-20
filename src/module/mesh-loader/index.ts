@@ -1,4 +1,5 @@
 import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
+import './index.css'
 
 export interface MeshLoaderLoadingOption extends LoadingOption, Partial<MeshLoaderLoadingSupportChangeOption> {
 }
@@ -31,7 +32,6 @@ export default class MeshLoaderLoading extends LoadingTop {
         return true
       }
     })
-    this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
@@ -50,110 +50,17 @@ export default class MeshLoaderLoading extends LoadingTop {
     }
   }
 
-  #createStyle() {
-    const style = document.createElement('style')
-    style.innerHTML = `
-          .${this.id} {
-            overflow: hidden;
-            height: inherit;
-            width: inherit;
-          }
-          .${this.id} .${this.id}-circle {
-            width: 30px;
-            height: 30px;
-            position: absolute;
-            background: var(--color);
-            border-radius: 50%;
-            margin: -15px;
-            -webkit-animation: ${this.id}-mesh 3s ease-in-out infinite -1.5s;
-            animation: ${this.id}-mesh 3s ease-in-out infinite -1.5s;
-          }
-          
-          .${this.id} > div .${this.id}-circle:last-child {
-            -webkit-animation-delay: 0s;
-            animation-delay: 0s;
-          }
-          
-          .${this.id} > div {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-          }
-          
-          .${this.id} > div:last-child {
-            -webkit-transform: rotate(90deg);
-            -ms-transform: rotate(90deg);
-            transform: rotate(90deg);
-          }
-          
-          @-webkit-keyframes ${this.id}-mesh {
-            0% {
-              -webkit-transform-origin: 50% -100%;
-              transform-origin: 50% -100%;
-              -webkit-transform: rotate(0);
-              transform: rotate(0);
-            }
-            50% {
-              -webkit-transform-origin: 50% -100%;
-              transform-origin: 50% -100%;
-              -webkit-transform: rotate(360deg);
-              transform: rotate(360deg);
-            }
-            50.1% {
-              -webkit-transform-origin: 50% 200%;
-              transform-origin: 50% 200%;
-              -webkit-transform: rotate(0deg);
-              transform: rotate(0deg);
-            }
-            100% {
-              -webkit-transform-origin: 50% 200%;
-              transform-origin: 50% 200%;
-              -webkit-transform: rotate(360deg);
-              transform: rotate(360deg);
-            }
-          }
-          
-          @keyframes ${this.id}-mesh {
-            0% {
-              -webkit-transform-origin: 50% -100%;
-              transform-origin: 50% -100%;
-              -webkit-transform: rotate(0);
-              transform: rotate(0);
-            }
-            50% {
-              -webkit-transform-origin: 50% -100%;
-              transform-origin: 50% -100%;
-              -webkit-transform: rotate(360deg);
-              transform: rotate(360deg);
-            }
-            50.1% {
-              -webkit-transform-origin: 50% 200%;
-              transform-origin: 50% 200%;
-              -webkit-transform: rotate(0deg);
-              transform: rotate(0deg);
-            }
-            100% {
-              -webkit-transform-origin: 50% 200%;
-              transform-origin: 50% 200%;
-              -webkit-transform: rotate(360deg);
-              transform: rotate(360deg);
-            }
-          }
-        `
-    return style
-  }
-
   #createLoadingElement() {
     const loadingElement = document.createElement('div');
-    loadingElement.classList.add(this.id)
+    loadingElement.classList.add('wj-loading-animation-mesh-loader')
     loadingElement.innerHTML = `
-          <div class="${this.id}-set-one">
-            <div class="${this.id}-circle"></div>
-            <div class="${this.id}-circle"></div>
+          <div class="wj-loading-animation-mesh-loader-set-one">
+            <div class="wj-loading-animation-mesh-loader-circle"></div>
+            <div class="wj-loading-animation-mesh-loader-circle"></div>
           </div>
-          <div class="${this.id}-set-two">
-            <div class="${this.id}-circle"></div>
-            <div class="${this.id}-circle"></div>
+          <div class="wj-loading-animation-mesh-loader-set-two">
+            <div class="wj-loading-animation-mesh-loader-circle"></div>
+            <div class="wj-loading-animation-mesh-loader-circle"></div>
           </div>
     `
     return loadingElement

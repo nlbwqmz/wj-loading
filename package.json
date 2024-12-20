@@ -1,6 +1,6 @@
 {
   "name": "wj-loading",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "type": "module",
   "main": "dist/wj-loading.umd.js",
   "module": "dist/wj-loading.es.js",
@@ -24,6 +24,7 @@
   "description": "开箱即用的loading组件",
   "files": [
     "dist",
+    "readme",
     "README.md"
   ],
   "repository": {
@@ -31,6 +32,7 @@
     "url": "git+https://github.com/nlbwqmz/wj-loading.git"
   },
   "scripts": {
+    "pack": "npm pack",
     "dev": "vite",
     "link": "npm link",
     "unlink": "npm unlink",

@@ -1,4 +1,20 @@
 import Loading from "./index"
+import './core/loadingTop.css'
+import './module/bounce/index.css'
+import './module/circle-loader/index.css'
+import './module/cm-spinner/index.css'
+import './module/cubes/index.css'
+import './module/dot-expand/index.css'
+import './module/dot-jump/index.css'
+import './module/jelly/index.css'
+import './module/mesh-loader/index.css'
+import './module/text/index.css'
+import './module/text-fill/index.css'
+import './module/triple-spinner/index.css'
+import './module/wave/index.css'
+import './module/wave-value/index.css'
+import {i} from "vite/dist/node/types.d-aGj9QkWt";
+import TextFillLoading from "./module/text-fill";
 
 const keys = Object.keys(Loading)
 
@@ -25,8 +41,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="desc">
     <div class="bg">yarn add wj-loading</div>
     <div class="bg">npm install wj-loading</div>
-    <div class="bg">&lt;script src="https://cdn.jsdelivr.net/npm/wj-loading@:version/dist/wj-loading.umd.min.js"&gt;&lt;/script&gt;</div>
-    <div class="bg">&lt;script src="https://unpkg.com/wj-loading@:version/wj-loading.umd.js"&gt;&lt;/script&gt;</div>
     <div style="display: flex; justify-content: center; align-items: center; gap: 20px">
       <div data-url="https://github.com/nlbwqmz/wj-loading" class="url">github</div>
       <div data-url="https://github.com/nlbwqmz/wj-loading-vue" class="url">vue指令版</div>
@@ -38,14 +52,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 
 keys.forEach(item => {
-  if (item !== 'WaveValueLoading') {
-    // @ts-ignore
-    new Loading[item]({
-      element: document.getElementById(`${item}-loading`),
-      background: 'rgba(255, 255, 255, .8)',
-      immediate: true
-    })
-  } else {
+  if(item === 'WaveValueLoading') {
     let value = 0
     const waveValueLoading = new Loading.WaveValueLoading({
       element: document.getElementById(`${item}-loading`),
@@ -61,6 +68,13 @@ keys.forEach(item => {
       }
       waveValueLoading.setValue(value)
     }, 500)
+  } else  {
+    // @ts-ignore
+    new Loading[item]({
+      element: document.getElementById(`${item}-loading`),
+      background: 'rgba(255, 255, 255, .8)',
+      immediate: true
+    })
   }
 
 })

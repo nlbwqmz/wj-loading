@@ -1,4 +1,5 @@
 import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
+import './index.css'
 
 export interface CubesLoadingOption extends LoadingOption, Partial<CubesLoadingSupportChangeOption> {
 }
@@ -35,7 +36,6 @@ export default class CubesLoading extends LoadingTop {
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
-    this.setChildrenStyle(this.#createStyle())
     this.finish()
   }
 
@@ -51,73 +51,19 @@ export default class CubesLoading extends LoadingTop {
     }
   }
 
-  #createStyle() {
-    const style = document.createElement('style')
-    style.innerHTML = `
-          .${this.id} {
-           display: grid;
-           grid-template-columns: repeat(3, 1fr);
-          }
-          .${this.id}-sk-cube {
-           width: var(--size);
-           height: var(--size);
-           background-color: var(--color);
-           animation: ${this.id}-sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-          }
-          .${this.id}-sk-cube1 {
-           animation-delay: 0.2s;
-          }
-          .${this.id}-sk-cube2 {
-           animation-delay: 0.3s;
-          }
-          .${this.id}-sk-cube3 {
-           animation-delay: 0.4s;
-          }
-          .${this.id}-sk-cube4 {
-           animation-delay: 0.1s;
-          }
-          .${this.id}-sk-cube5 {
-           animation-delay: 0.2s;
-          }
-          .${this.id}-sk-cube6 {
-           animation-delay: 0.3s;
-          }
-          .${this.id}-sk-cube7 {
-           animation-delay: 0s;
-          }
-          .${this.id}-sk-cube8 {
-           animation-delay: 0.1s;
-          }
-          .${this.id}-sk-cube9 {
-           animation-delay: 0.2s;
-          }
-          @keyframes ${this.id}-sk-cubeGridScaleDelay {
-           0%,
-           70%,
-           100% {
-            transform: scale3D(1, 1, 1);
-           }
-           35% {
-            transform: scale3D(0, 0, 1);
-           }
-          }
-        `
-    return style
-  }
-
   #createLoadingElement() {
     const loadingElement = document.createElement('div');
-    loadingElement.classList.add(this.id)
+    loadingElement.classList.add('wj-loading-animation-cubes')
     loadingElement.innerHTML = `
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube1"></div>
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube2"></div>
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube3"></div>
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube4"></div>
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube5"></div>
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube6"></div>
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube7"></div>
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube8"></div>
-      <div class="${this.id}-sk-cube ${this.id}-sk-cube9"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube1"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube2"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube3"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube4"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube5"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube6"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube7"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube8"></div>
+      <div class="wj-loading-animation-cubes-sk-cube wj-loading-animation-cubes-sk-cube9"></div>
     `
     return loadingElement
   }

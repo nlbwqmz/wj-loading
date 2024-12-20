@@ -1,0 +1,26 @@
+.wj-loading-animation-text {
+  --color: #333;
+  --size: 16px;
+  --animation-duration: 0s;
+  display: flex;
+}
+
+.wj-loading-animation-text div {
+  animation: wj-loading-animation-text-loading var(--animation-duration) linear infinite;
+  font-size: var(--size);
+  color: var(--color);
+}
+
+@keyframes wj-loading-animation-text-loading {
+  0% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

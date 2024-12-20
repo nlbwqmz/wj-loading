@@ -1,0 +1,45 @@
+.wj-loading-animation-text-fill {
+  --size: 40px;
+  --text: 'Loading';
+  --background-color: #FFF;
+  --fill-color: #76DAFF;
+  --wj-loading-animation-text-fill-direction: wj-loading-animation-text-fill-vertical;
+  font-size: var(--size);
+  font-weight: bold;
+  display: inline-block;
+  letter-spacing: 2px;
+  position: relative;
+  color: var(--background-color);
+  box-sizing: border-box;
+}
+
+.wj-loading-animation-text-fill::after {
+  content: var(--text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--fill-color);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  animation: var(--wj-loading-animation-text-fill-direction) 2s linear infinite;
+}
+
+@keyframes wj-loading-animation-text-fill-horizontal {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes wj-loading-animation-text-fill-vertical {
+  0% {
+    height: 100%;
+  }
+  100% {
+    height: 0;
+  }
+}

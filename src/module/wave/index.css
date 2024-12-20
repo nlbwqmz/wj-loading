@@ -1,0 +1,81 @@
+.wj-loading-animation-wave {
+  --color: #000;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 50px;
+  width: 50px;
+  margin: -25px 0 0 -25px;
+  border-radius: 50%;
+}
+
+.wj-loading-animation-wave:before, .wj-loading-animation-wave:after {
+  content: '';
+  border: 2px solid var(--color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 0;
+}
+
+.wj-loading-animation-wave:before {
+  -ms-transform: scale(1, 1);
+  transform: scale(1, 1);
+  opacity: 1;
+  -webkit-animation: wj-loading-animation-wave-spWaveBe 0.6s infinite linear;
+  animation: wj-loading-animation-wave-spWaveBe 0.6s infinite linear;
+}
+
+.wj-loading-animation-wave:after {
+  -ms-transform: scale(0, 0);
+  transform: scale(0, 0);
+  opacity: 0;
+  -webkit-animation: wj-loading-animation-wave-spWaveAf 0.6s infinite linear;
+  animation: wj-loading-animation-wave-spWaveAf 0.6s infinite linear;
+}
+
+@-webkit-keyframes wj-loading-animation-wave-spWaveAf {
+  from {
+    transform: scale(0.5, 0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+@keyframes wj-loading-animation-wave-spWaveAf {
+  from {
+    transform: scale(0.5, 0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes wj-loading-animation-wave-spWaveBe {
+  from {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.5, 1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes wj-loading-animation-wave-spWaveBe {
+  from {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.5, 1.5);
+    opacity: 0;
+  }
+}

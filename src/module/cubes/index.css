@@ -1,0 +1,60 @@
+.wj-loading-animation-cubes {
+  --size: 20px;
+  --color: #333;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wj-loading-animation-cubes-sk-cube {
+  width: var(--size);
+  height: var(--size);
+  background-color: var(--color);
+  animation: wj-loading-animation-cubes-sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+
+.wj-loading-animation-cubes-sk-cube1 {
+  animation-delay: 0.2s;
+}
+
+.wj-loading-animation-cubes-sk-cube2 {
+  animation-delay: 0.3s;
+}
+
+.wj-loading-animation-cubes-sk-cube3 {
+  animation-delay: 0.4s;
+}
+
+.wj-loading-animation-cubes-sk-cube4 {
+  animation-delay: 0.1s;
+}
+
+.wj-loading-animation-cubes-sk-cube5 {
+  animation-delay: 0.2s;
+}
+
+.wj-loading-animation-cubes-sk-cube6 {
+  animation-delay: 0.3s;
+}
+
+.wj-loading-animation-cubes-sk-cube7 {
+  animation-delay: 0s;
+}
+
+.wj-loading-animation-cubes-sk-cube8 {
+  animation-delay: 0.1s;
+}
+
+.wj-loading-animation-cubes-sk-cube9 {
+  animation-delay: 0.2s;
+}
+
+@keyframes wj-loading-animation-cubes-sk-cubeGridScaleDelay {
+  0%,
+  70%,
+  100% {
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
+    transform: scale3D(0, 0, 1);
+  }
+}

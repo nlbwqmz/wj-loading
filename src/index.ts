@@ -9,7 +9,7 @@ import DotJumpLoading from "./module/dot-jump";
 import JellyLoading from "./module/jelly";
 import WaveLoading from "./module/wave";
 import DotExpandLoading from "./module/dot-expand";
-import WaveValueLoading from "./module/wave_value";
+import WaveValueLoading from "./module/wave-value";
 import TextFillLoading from "./module/text-fill";
 
 export type * from "./module/bounce";
@@ -23,7 +23,7 @@ export type * from "./module/dot-jump";
 export type * from "./module/jelly";
 export type * from "./module/wave";
 export type * from "./module/dot-expand";
-export type * from "./module/wave_value";
+export type * from "./module/wave-value";
 export type * from "./module/text-fill";
 export type * from "./core/loadingTop";
 

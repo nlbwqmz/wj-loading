@@ -1,4 +1,5 @@
 import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
+import './index.css'
 
 export interface WaveValueLoadingOption extends LoadingOption, Partial<WaveValueLoadingSupportChangeOption> {
 }
@@ -38,7 +39,7 @@ export default class WaveValueLoading extends LoadingTop {
               // @ts-ignore
               target[key] = value
               if (key === 'value') {
-                const querySelector = document.querySelector(`.${this.id}-text`);
+                const querySelector = this.#loadingElement.querySelector(`.wj-loading-animation-wave-value-text`);
                 if (querySelector) {
                   querySelector.innerHTML = value + '%'
                 }
@@ -58,7 +59,6 @@ export default class WaveValueLoading extends LoadingTop {
           }
         }
     )
-    this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
@@ -107,85 +107,10 @@ export default class WaveValueLoading extends LoadingTop {
     return minOutput + ((value - minInput) / (maxInput - minInput)) * (maxOutput - minOutput);
   }
 
-  #createStyle() {
-    const style = document.createElement('style')
-    style.innerHTML = `
-.${this.id} {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: var(--padding-size);
-  border: var(--border-size) solid var(--color);
-  border-radius: 50%;
-  overflow: hidden;
-  position: relative;
-}
-
-.${this.id}-wave {
-  position: relative;
-  width: var(--size);
-  height: var(--size);
-  background-color: var(--color);
-  border-radius: 50%;
-}
-.${this.id}-wave::before, .${this.id}-wave::after {
-  content: "";
-  position: absolute;
-  width: calc(var(--size) * 2);
-  height: calc(var(--size) * 2);
-  top: var(--top);
-  left: 50%;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 45%;
-  transition: top 0.5s ease;
-  transform: translate(-50%, -50%) rotate(0);
-  -webkit-animation: ${this.id}-rotate 6s linear infinite;
-          animation: ${this.id}-rotate 6s linear infinite;
-  z-index: 1;
-}
-.${this.id}-wave::after {
-  border-radius: 47%;
-  background-color: rgba(255, 255, 255, 0.9);
-  transform: translate(-50%, -50%) rotate(0);
-  -webkit-animation: ${this.id}-rotate 10s linear -5s infinite;
-          animation: ${this.id}-rotate 10s linear -5s infinite;
-  z-index: 2;
-}
-
-.${this.id}-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: var(--font-size);
-  color: var(--font-color);
-  font-weight: var(--font-weight);
-  z-index: 10;
-}
-
-@-webkit-keyframes ${this.id}-rotate {
-  50% {
-    transform: translate(-50%, -53%) rotate(180deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-@keyframes ${this.id}-rotate {
-  50% {
-    transform: translate(-50%, -53%) rotate(180deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-        `
-    return style
-  }
-
   #createLoadingElement() {
     const loadingElement = document.createElement('div');
-    loadingElement.classList.add(this.id)
-    loadingElement.innerHTML = `<div class="${this.id}-wave"></div><div class="${this.id}-text">${this.#supportChangeObject.value}%</div>`
+    loadingElement.classList.add('wj-loading-animation-wave-value')
+    loadingElement.innerHTML = `<div class="wj-loading-animation-wave-value-wave"></div><div class="wj-loading-animation-wave-value-text">${this.#supportChangeObject.value}%</div>`
     return loadingElement
   }
 

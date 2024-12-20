@@ -1,7 +1,7 @@
 import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
+import './index.css'
 
-export interface DotExpandLoadingOption extends LoadingOption, Partial<DotExpandLoadingSupportChangeOption> {
-}
+export interface DotExpandLoadingOption extends LoadingOption, Partial<DotExpandLoadingSupportChangeOption> {}
 
 export interface DotExpandLoadingSupportChangeOption {
   color: string;
@@ -31,7 +31,6 @@ export default class DotExpandLoading extends LoadingTop {
         return true
       }
     })
-    this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
     this.#setVariable()
     this.addElement(this.#loadingElement)
@@ -49,35 +48,9 @@ export default class DotExpandLoading extends LoadingTop {
     }
   }
 
-  #createStyle() {
-    const style = document.createElement('style')
-    style.innerHTML = `
-.${this.id} {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: var(--color);
-
-  animation: ${this.id}-ball-scale infinite linear 0.75s;
-}
-
-@keyframes ${this.id}-ball-scale {
-  0% {
-    transform: scale(0.1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0;
-  }
-}
-        `
-    return style
-  }
-
   #createLoadingElement() {
     const loadingElement = document.createElement('div');
-    loadingElement.classList.add(this.id)
+    loadingElement.classList.add('wj-loading-animation-dot-expand')
     return loadingElement
   }
 

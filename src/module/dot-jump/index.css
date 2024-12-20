@@ -1,0 +1,103 @@
+.wj-loading-animation-dot-jump {
+  --color-0: #000;
+  --color-1: #000;
+  display: block;
+  font-size: 0;
+  color: var(--color-0);
+}
+
+.wj-loading-animation-dot-jump,
+.wj-loading-animation-dot-jump > div {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.wj-loading-animation-dot-jump > div {
+  display: inline-block;
+  float: none;
+  background-color: currentColor;
+  border: 0 solid currentColor;
+}
+
+.wj-loading-animation-dot-jump {
+  width: 42px;
+  height: 32px;
+}
+
+.wj-loading-animation-dot-jump > div:nth-child(1) {
+  position: absolute;
+  bottom: 32%;
+  left: 18%;
+  width: 14px;
+  height: 14px;
+  border-radius: 100%;
+  transform-origin: center bottom;
+  animation: wj-loading-animation-dot-jump-ball-climbing-dot-jump 0.6s ease-in-out infinite;
+}
+
+.wj-loading-animation-dot-jump > div:not(:nth-child(1)) {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 2px;
+  border-radius: 0;
+  background-color: var(--color-1);
+  transform: translate(60%, 0);
+  animation: wj-loading-animation-dot-jump-ball-climbing-dot-steps 1.8s linear infinite;
+}
+
+.wj-loading-animation-dot-jump > div:not(:nth-child(1)):nth-child(2) {
+  animation-delay: 0ms;
+}
+
+.wj-loading-animation-dot-jump > div:not(:nth-child(1)):nth-child(3) {
+  animation-delay: -600ms;
+}
+
+.wj-loading-animation-dot-jump > div:not(:nth-child(1)):nth-child(4) {
+  animation-delay: -1200ms;
+}
+
+@keyframes wj-loading-animation-dot-jump-ball-climbing-dot-jump {
+  0% {
+    transform: scale(1, 0.7);
+  }
+  20% {
+    transform: scale(0.7, 1.2);
+  }
+  40% {
+    transform: scale(1, 1);
+  }
+  50% {
+    bottom: 125%;
+  }
+  46% {
+    transform: scale(1, 1);
+  }
+  80% {
+    transform: scale(0.7, 1.2);
+  }
+  90% {
+    transform: scale(0.7, 1.2);
+  }
+  100% {
+    transform: scale(1, 0.7);
+  }
+}
+
+@keyframes wj-loading-animation-dot-jump-ball-climbing-dot-steps {
+  0% {
+    top: 0;
+    right: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    right: 100%;
+    opacity: 0;
+  }
+}

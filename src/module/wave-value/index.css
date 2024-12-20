@@ -1,0 +1,78 @@
+.wj-loading-animation-wave-value {
+  --top: 0px;
+  --size: 100px;
+  --color: #76DAFF;
+  --border-size: 2px;
+  --padding-size: 2px;
+  --font-size: 20px;
+  --font-color: #000;
+  --font-weight: normal;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: var(--padding-size);
+  border: var(--border-size) solid var(--color);
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.wj-loading-animation-wave-value-wave {
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  background-color: var(--color);
+  border-radius: 50%;
+}
+
+.wj-loading-animation-wave-value-wave::before, .wj-loading-animation-wave-value-wave::after {
+  content: "";
+  position: absolute;
+  width: calc(var(--size) * 2);
+  height: calc(var(--size) * 2);
+  top: var(--top);
+  left: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 45%;
+  transition: top 0.5s ease;
+  transform: translate(-50%, -50%) rotate(0);
+  -webkit-animation: wj-loading-animation-wave-value-rotate 6s linear infinite;
+  animation: wj-loading-animation-wave-value-rotate 6s linear infinite;
+  z-index: 1;
+}
+
+.wj-loading-animation-wave-value-wave::after {
+  border-radius: 47%;
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: translate(-50%, -50%) rotate(0);
+  -webkit-animation: wj-loading-animation-wave-value-rotate 10s linear -5s infinite;
+  animation: wj-loading-animation-wave-value-rotate 10s linear -5s infinite;
+  z-index: 2;
+}
+
+.wj-loading-animation-wave-value-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--font-size);
+  color: var(--font-color);
+  font-weight: var(--font-weight);
+  z-index: 10;
+}
+
+@-webkit-keyframes wj-loading-animation-wave-value-rotate {
+  50% {
+    transform: translate(-50%, -53%) rotate(180deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes wj-loading-animation-wave-value-rotate {
+  50% {
+    transform: translate(-50%, -53%) rotate(180deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

@@ -1,3 +1,4 @@
+import './index.css'
 import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
 
 export interface BounceLoadingOption extends LoadingOption, Partial<BounceLoadingSupportChangeOption> {
@@ -33,7 +34,6 @@ export default class BounceLoading extends LoadingTop {
     this.#loadingElement = this.#createLoadingElement();
     this.#setVariable()
     this.addElement(this.#loadingElement)
-    this.setChildrenStyle(this.#createStyle())
     this.finish()
   }
 
@@ -49,44 +49,10 @@ export default class BounceLoading extends LoadingTop {
     }
   }
 
-  #createStyle() {
-    const style = document.createElement('style')
-    style.innerHTML = `
-      .${this.id}-bounce {
-       text-align: center;
-      }
-      .${this.id}-bounce>div {
-       width: var(--size);
-       height: var(--size);
-       background-color: var(--color);
-       border-radius: 100%;
-       display: inline-block;
-       animation: ${this.id}-sk-bouncedelay 1.4s infinite ease-in-out both;
-      }
-      .${this.id}-bounce .${this.id}-bounce1 {
-       animation-delay: -0.32s;
-      }
-      .${this.id}-bounce .${this.id}-bounce2 {
-       animation-delay: -0.16s;
-      }
-      @keyframes ${this.id}-sk-bouncedelay {
-       0%,
-       80%,
-       100% {
-        transform: scale(0);
-       }
-       40% {
-        transform: scale(1.0);
-       }
-      }
-        `
-    return style
-  }
-
   #createLoadingElement() {
     const loadingElement = document.createElement('div');
-    loadingElement.classList.add(`${this.id}-bounce`)
-    loadingElement.innerHTML = `<div class="${this.id}-bounce1"></div><div class="${this.id}-bounce2"></div><div class="${this.id}-bounce3"></div>`
+    loadingElement.classList.add(`wj-loading-animation-bounce`)
+    loadingElement.innerHTML = `<div class="wj-loading-animation-bounce1"></div><div class="wj-loading-animation-bounce2"></div><div class="wj-loading-animation-bounce3"></div>`
     return loadingElement
   }
   get [Symbol.toStringTag](){

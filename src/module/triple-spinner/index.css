@@ -1,0 +1,52 @@
+.wj-loading-animation-triple-spinner {
+  --color-0: #FF5722;
+  --color-1: #FF9800;
+  --color-2: #FFC107;
+  --size: 100px;
+  display: block;
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  border: 4px solid transparent;
+  border-top: 4px solid var(--color-0);
+  -webkit-animation: wj-loading-animation-triple-spinner-spin 2s linear infinite;
+  animation: wj-loading-animation-triple-spinner-spin 2s linear infinite;
+}
+
+.wj-loading-animation-triple-spinner::before,
+.wj-loading-animation-triple-spinner::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 4px solid transparent;
+}
+
+.wj-loading-animation-triple-spinner::before {
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-top-color: var(--color-1);
+  -webkit-animation: wj-loading-animation-triple-spinner-spin 3s linear infinite;
+  animation: wj-loading-animation-triple-spinner-spin 3.5s linear infinite;
+}
+
+.wj-loading-animation-triple-spinner::after {
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-top-color: var(--color-2);
+  -webkit-animation: wj-loading-animation-triple-spinner-spin 1.5s linear infinite;
+  animation: wj-loading-animation-triple-spinner-spin 1.75s linear infinite;
+}
+
+@keyframes wj-loading-animation-triple-spinner-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

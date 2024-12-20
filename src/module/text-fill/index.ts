@@ -1,4 +1,5 @@
 import LoadingTop, {LoadingOption, LoadingSupportChangeOption} from "../../core/loadingTop";
+import './index.css'
 
 export interface TextFillLoadingOption extends LoadingOption, Partial<TextFillLoadingSupportChangeOption> {
 }
@@ -37,10 +38,11 @@ export default class TextFillLoading extends LoadingTop {
             if (value !== undefined && value !== null) {
               // @ts-ignore
               target[key] = value
-              const styleList: (keyof TextFillLoadingSupportChangeOption)[] = ['color', 'fillColor', 'size']
+              const styleList: (keyof TextFillLoadingSupportChangeOption)[] = ['color', 'fillColor', 'size', 'direction']
               if (styleList.includes(key)) {
-                this.setChildrenStyle(this.#createStyle())
+                this.#handleStyleChange()
               } else if (key === 'text') {
+                this.#loadingElement.style.setProperty('--text', `'${value}'`)
                 this.#loadingElement.innerHTML = value
               }
             }
@@ -48,8 +50,8 @@ export default class TextFillLoading extends LoadingTop {
           }
         }
     )
-    this.setChildrenStyle(this.#createStyle())
     this.#loadingElement = this.#createLoadingElement()
+    this.#setVariable()
     this.addElement(this.#loadingElement)
     this.finish()
   }
@@ -61,71 +63,37 @@ export default class TextFillLoading extends LoadingTop {
     }
   }
 
-  #createStyle() {
-    const style = document.createElement('style')
+  #setVariable() {
+    this.#loadingElement.style.setProperty('--size', this.#supportChangeObject.size)
+    this.#loadingElement.style.setProperty('--text', `'${this.#supportChangeObject.text}'`)
+    this.#handleStyleChange()
+  }
+
+  #handleStyleChange(){
     const convertResult = this.#convert()
-    style.innerHTML = `
-.${this.id} {
-  font-size: ${this.#supportChangeObject.size};
-  font-weight: bold;
-  display: inline-block;
-  letter-spacing: 2px;
-  position: relative;
-  color: ${convertResult.backgroundColor};
-  box-sizing: border-box;
-}
-.${this.id}::after {
-  content: '${this.#supportChangeObject.text}';
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: ${convertResult.fillColor};
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  box-sizing: border-box;
-  animation: ${this.id}-animloader 2s linear infinite;
-}
-${convertResult.keyframes}
-        `
-    return style
+    this.#loadingElement.style.setProperty('--background-color', convertResult.backgroundColor)
+    this.#loadingElement.style.setProperty('--fill-color', convertResult.fillColor)
+    this.#loadingElement.style.setProperty('--wj-loading-animation-text-fill-direction', convertResult.keyframes)
   }
 
   #convert() {
-    const result: { backgroundColor?: number | string, fillColor?: number | string, keyframes?: string } = {}
     if (this.#supportChangeObject.direction === 'horizontal') {
-      result.backgroundColor = this.#supportChangeObject.color
-      result.fillColor = this.#supportChangeObject.fillColor
-      result.keyframes = `
-          @keyframes ${this.id}-animloader {
-            0% {
-              width: 0%;
-            }
-            100% {
-              width: 100%;
-            }
-          }
-        `
-    } else if (this.#supportChangeObject.direction === 'vertical') {
-      result.backgroundColor = this.#supportChangeObject.fillColor
-      result.fillColor = this.#supportChangeObject.color
-      result.keyframes = `
-          @keyframes ${this.id}-animloader {
-            0% {
-              height: 100%;
-            }
-            100% {
-              height: 0%;
-            }
-          }
-        `
+      return {
+        backgroundColor: this.#supportChangeObject.color,
+        fillColor: this.#supportChangeObject.fillColor,
+        keyframes: 'wj-loading-animation-text-fill-horizontal'
+      }
     }
-    return result
+    return {
+      backgroundColor: this.#supportChangeObject.fillColor,
+      fillColor: this.#supportChangeObject.color,
+      keyframes: 'wj-loading-animation-text-fill-vertical'
+    }
   }
 
   #createLoadingElement() {
     const divElement = document.createElement('div');
-    divElement.classList.add(this.id)
+    divElement.classList.add('wj-loading-animation-text-fill')
     divElement.innerHTML = this.#supportChangeObject.text
     return divElement
   }
